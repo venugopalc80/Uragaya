@@ -15,46 +15,68 @@ type Product = {
   tone: string;
   image: string;
   tag?: string;
+  category: "Vegetarian" | "Non-vegetarian";
 };
 
 const products: Product[] = [
   {
-    id: "avakaya", name: "Avakaya", subtitle: "Andhra raw mango pickle",
+    id: "avakaya", name: "Avakaya", subtitle: "Andhra raw mango pickle", category: "Vegetarian",
     description: "A bold Andhra classic with raw mango, chilli and mustard.",
     price: 6.99, tone: "rust",
     image: "https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=900&q=85",
     tag: "Signature"
   },
   {
-    id: "gongura", name: "Gongura", subtitle: "Sorrel leaf pickle",
+    id: "gongura", name: "Gongura", subtitle: "Sorrel leaf pickle", category: "Vegetarian",
     description: "Distinctive tang and deep savoury flavour inspired by Andhra kitchens.",
     price: 6.99, tone: "green",
     image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=900&q=85"
   },
   {
-    id: "usirikaya", name: "Usirikaya", subtitle: "Indian gooseberry pickle",
+    id: "usirikaya", name: "Usirikaya", subtitle: "Indian gooseberry pickle", category: "Vegetarian",
     description: "A bright, punchy regional favourite with a satisfying tang.",
     price: 6.99, tone: "gold",
     image: "https://images.unsplash.com/photo-1615485500704-8e990f9900f2?auto=format&fit=crop&w=900&q=85"
   },
   {
-    id: "garlic", name: "Garlic", subtitle: "Garlic and spice pickle",
+    id: "garlic", name: "Garlic", subtitle: "Garlic and spice pickle", category: "Vegetarian",
     description: "A warming, aromatic pickle for rice, flatbreads and savoury plates.",
     price: 6.99, tone: "cream",
     image: "https://images.unsplash.com/photo-1540148426945-6cf22a6b2383?auto=format&fit=crop&w=900&q=85"
   },
   {
-    id: "chhundo", name: "Chhundo", subtitle: "Gujarati-style mango relish",
+    id: "chhundo", name: "Chhundo", subtitle: "Gujarati-style mango relish", category: "Vegetarian",
     description: "A sweet-tangy mango profile to balance spicy and savoury meals.",
     price: 6.99, tone: "gold",
     image: "https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=900&q=85",
     tag: "Regional favourite"
   },
   {
-    id: "ker-sangri", name: "Ker-Sangri", subtitle: "Rajasthani desert pickle",
+    id: "ker-sangri", name: "Ker-Sangri", subtitle: "Rajasthani desert pickle", category: "Vegetarian",
     description: "A distinctive regional recipe celebrating India's desert pantry.",
     price: 7.49, tone: "green",
     image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=900&q=85"
+  }
+  ,{
+    id: "chicken", name: "Chicken Pickle", subtitle: "Andhra-style chicken pickle",
+    description: "A bold, savoury regional favourite with a chilli-forward character.",
+    price: 8.99, tone: "rust", category: "Non-vegetarian",
+    image: "https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?auto=format&fit=crop&w=900&q=85",
+    tag: "Non-vegetarian"
+  },
+  {
+    id: "mutton", name: "Mutton Pickle", subtitle: "Spiced mutton pickle",
+    description: "A rich, savoury concept inspired by regional meat-pickle traditions.",
+    price: 9.99, tone: "green", category: "Non-vegetarian",
+    image: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=900&q=85",
+    tag: "Non-vegetarian"
+  },
+  {
+    id: "prawn", name: "Prawn Pickle", subtitle: "Coastal-style prawn pickle",
+    description: "A coastal-inspired concept with a bold seafood and spice profile.",
+    price: 9.99, tone: "gold", category: "Non-vegetarian",
+    image: "https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?auto=format&fit=crop&w=900&q=85",
+    tag: "Non-vegetarian"
   }
 ];
 
@@ -66,14 +88,16 @@ export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [query, setQuery] = useState("");
+  const [category, setCategory] = useState<"All" | "Vegetarian" | "Non-vegetarian">("All");
   const [currency, setCurrency] = useState("GBP");
   const [notice, setNotice] = useState("");
   const cartCount = Object.values(cart).reduce((sum, quantity) => sum + quantity, 0);
   const visibleProducts = useMemo(
     () => products.filter((product) =>
-      (product.name + " " + product.subtitle).toLowerCase().includes(query.toLowerCase())
+      (category === "All" || product.category === category) &&
+      (product.name + " " + product.subtitle + " " + product.category).toLowerCase().includes(query.toLowerCase())
     ),
-    [query]
+    [query, category]
   );
 
   function addToCart(product: Product) {
@@ -154,14 +178,18 @@ export default function Home() {
 
       <section className="shop-section section-wrap" id="shop">
         <div className="section-heading">
-          <div><p className="eyebrow">THE URAGAYA PANTRY</p><h2>Tradition, sealed in every jar.</h2><p className="section-intro">Discover distinctive regional flavours, from Andhra favourites to recipes from across India.</p></div>
+          <div><p className="eyebrow">THE URAGAYA PANTRY</p><h2>Tradition, sealed in every jar.</h2><p className="section-intro">Discover regional vegetarian and non-vegetarian pickles inspired by food traditions across India.</p></div>
           <a className="text-link" href="#shop">Explore all flavours <ArrowRight size={16} /></a>
+        </div>
+        <div className="category-filters" role="group" aria-label="Filter pickles by category">
+          {(["All", "Vegetarian", "Non-vegetarian"] as const).map((option) => <button key={option} type="button" className={category === option ? "category-filter selected" : "category-filter"} aria-pressed={category === option} onClick={() => setCategory(option)}>{option === "All" ? "All pickles" : option}</button>)}
         </div>
         {query && <p className="results-count">{visibleProducts.length} result{visibleProducts.length === 1 ? "" : "s"} for “{query}”</p>}
         <div className="product-grid">
           {visibleProducts.map((product, index) => (
             <article className="product-card" key={product.id}>
               <div className={`product-image product-${product.tone}`}>
+                <span className={product.category === "Vegetarian" ? "diet-badge veg-badge" : "diet-badge nonveg-badge"}>{product.category === "Vegetarian" ? "VEGETARIAN" : "NON-VEGETARIAN"}</span>
                 {product.tag && <span className="product-tag">{product.tag}</span>}
                 <img src={product.image} alt={product.name + " pickle product styling"} loading={index > 2 ? "lazy" : "eager"} />
                 <button className="quick-add" onClick={() => addToCart(product)} aria-label={`Add ${product.name} to bag`}><Plus size={19} /></button>
@@ -173,7 +201,7 @@ export default function Home() {
           ))}
           {visibleProducts.length === 0 && <p className="empty-state">No flavours found. Try mango, garlic or gongura.</p>}
         </div>
-        <p className="concept-note">Concept collection for design review. Recipes, availability, pack sizes and prices are provisional.</p>
+        <p className="concept-note">Concept collection for design review. Product range, recipes, availability, pack sizes and prices are provisional. Meat and seafood products require validated food-safety controls, accurate ingredient/allergen labelling and suitable storage and shipping before launch.</p>
       </section>
 
 
