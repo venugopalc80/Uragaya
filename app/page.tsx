@@ -133,16 +133,16 @@ export default function Home() {
         <div className="hero-image" />
         <div className="hero-shade" />
         <div className="hero-copy">
-          <p className="eyebrow light">TIMELESS FLAVOURS. GLOBAL TABLES.</p>
-          <h1>Indian pickles.<br />A world of flavour.</h1>
-          <p className="hero-description">Born from regional traditions. Made with care in Andhra Pradesh. Ready to find a place at your table.</p>
+          <p className="eyebrow light">A HERITAGE OF FLAVOUR. MADE TO BE SHARED.</p>
+          <h1>India in every jar.<br />A world of flavour.</h1>
+          <p className="hero-description">Rooted in Andhra Pradesh and inspired by India’s regional kitchens. Discover bold, memorable pickles made for tables everywhere.</p>
           <div className="hero-actions">
-            <a className="button button-primary" href="#shop">Explore the collection <ArrowRight size={17} /></a>
-            <a className="button button-ghost" href="#story">Discover our story <ArrowDownRight size={17} /></a>
+            <a className="button button-primary" href="#shop">Shop the collection <ArrowRight size={17} /></a>
+            <a className="button button-ghost" href="#story">Our heritage <ArrowDownRight size={17} /></a>
           </div>
         </div>
         <div className="hero-note"><span>01 / OUR ORIGIN</span><p>From our home in Andhra Pradesh<br />to tables around the world.</p></div>
-        <div className="hero-bottom"><span>MADE WITH ROOTS. SHARED WITH THE WORLD.</span><span>SCROLL TO DISCOVER ↓</span></div>
+        <div className="hero-bottom"><span>ROOTED IN INDIA. SHARED WITH THE WORLD.</span><span>SCROLL TO DISCOVER ↓</span></div>
       </section>
 
       <section className="promise-bar" id="quality">
@@ -154,7 +154,7 @@ export default function Home() {
 
       <section className="shop-section section-wrap" id="shop">
         <div className="section-heading">
-          <div><p className="eyebrow">THE URAGAYA PANTRY</p><h2>Meet your new table essentials.</h2><p className="section-intro">A first collection inspired by the flavours and foodways of India.</p></div>
+          <div><p className="eyebrow">THE URAGAYA PANTRY</p><h2>Tradition, sealed in every jar.</h2><p className="section-intro">Discover distinctive regional flavours, from Andhra favourites to recipes from across India.</p></div>
           <a className="text-link" href="#shop">Explore all flavours <ArrowRight size={16} /></a>
         </div>
         {query && <p className="results-count">{visibleProducts.length} result{visibleProducts.length === 1 ? "" : "s"} for “{query}”</p>}
@@ -178,17 +178,17 @@ export default function Home() {
 
       <section className="story-band" id="story">
         <div className="story-image" role="img" aria-label="Traditional Indian ingredients arranged on a kitchen table" />
-        <div className="story-copy"><p className="eyebrow light">OUR ROOTS, OUR PROMISE</p><h2>Some flavours<br />feel like home.</h2><p>Uragaya takes its inspiration from India's regional pickle traditions, beginning in Andhra Pradesh. We're building a brand that honours those roots and welcomes curious tables everywhere.</p><a className="button button-light" href="#quality">What matters to us <ArrowRight size={16} /></a></div>
+        <div className="story-copy"><p className="eyebrow light">OUR ROOTS, OUR PROMISE</p><h2>A taste of home.<br />Wherever you are.</h2><p>Every region has its own way with a pickle. URAGAYA begins in Andhra Pradesh, celebrating the bold flavours, patient craft and food traditions that bring people back to the table.</p><a className="button button-light" href="#quality">What matters to us <ArrowRight size={16} /></a></div>
       </section>
 
       <section className="origin-section section-wrap">
-        <div className="origin-copy"><p className="eyebrow">OUR BEGINNING</p><h2>Rooted in Andhra.<br /><em>Made for everywhere.</em></h2><p>Our ambition starts with our own dedicated manufacturing facility in Andhra Pradesh and small pilot batches. Every product will earn its place through flavour, safety, consistency and care.</p><a className="text-link" href="#shipping">How we plan to ship <ArrowRight size={16} /></a></div>
+        <div className="origin-copy"><p className="eyebrow">OUR BEGINNING</p><h2>Rooted in Andhra.<br /><em>Made to travel.</em></h2><p>Our ambition starts with our own dedicated manufacturing facility in Andhra Pradesh and small pilot batches. Every product will earn its place through flavour, safety, consistency and care.</p><a className="text-link" href="#shipping">How we plan to ship <ArrowRight size={16} /></a></div>
         <div className="origin-image"><div className="origin-stamp">A TASTE<br />OF OUR<br /><strong>ROOTS</strong></div></div>
       </section>
 
       <section className="recipe-section" id="recipes">
         <div className="recipe-image" />
-        <div className="recipe-copy"><p className="eyebrow">FROM THE URAGAYA TABLE</p><h2>A little pickle.<br />A lot more possibility.</h2><p>From a spoonful alongside curd rice to a bold companion for a weeknight meal, discover the many ways regional Indian pickles can travel across cuisines.</p><a className="text-link" href="#shop">Find your flavour <ArrowRight size={16} /></a></div>
+        <div className="recipe-copy"><p className="eyebrow">FROM THE URAGAYA TABLE</p><h2>A little pickle.<br />A whole new table.</h2><p>From a spoonful alongside curd rice to a bold companion for a weeknight meal, discover the many ways regional Indian pickles can travel across cuisines.</p><a className="text-link" href="#shop">Find your flavour <ArrowRight size={16} /></a></div>
       </section>
 
       <section className="shipping-section section-wrap" id="shipping">
@@ -205,7 +205,7 @@ export default function Home() {
         <div className="footer-brand"><a className="wordmark wordmark-footer" href="#"><span className="brand-symbol">❧</span><span><strong>URAGAYA</strong><small>INDIAN PICKLES FOR THE WORLD</small></span></a><p>Timeless flavours. Global tables.</p></div>
         <div><strong>Explore</strong><a href="#shop">Shop pickles</a><a href="#story">Our story</a><a href="#recipes">Recipes</a></div>
         <div><strong>Help</strong><a href="#shipping">Shipping information</a><a href="mailto:hello@uragaya.com">Contact</a><a href="#quality">Ingredients & quality</a></div>
-        <div><strong>Follow the flavour</strong><p className="footer-small">A new Indian pickle story is taking shape.</p><span className="footer-country"><Globe2 size={15} /> {currency} · English</span></div>
+        <div><strong>Follow the flavour</strong><p className="footer-small">Regional Indian flavours, thoughtfully brought to the table.</p><span className="footer-country"><Globe2 size={15} /> {currency} · English</span></div>
         <div className="footer-bottom"><span>© {new Date().getFullYear()} URAGAYA. Brand concept in development.</span><span>Privacy · Terms · Accessibility</span></div>
       </footer>
 
