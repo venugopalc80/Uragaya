@@ -22,14 +22,14 @@ const products: Product[] = [
     id: "avakaya", name: "Avakaya", subtitle: "Andhra raw mango pickle",
     description: "A bold Andhra classic with raw mango, chilli and mustard.",
     price: 6.99, tone: "rust",
-    image: "https://images.unsplash.com/photo-1589135233689-7b5c5f5f7a3d?auto=format&fit=crop&w=900&q=85",
+    image: "https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=900&q=85",
     tag: "Signature"
   },
   {
     id: "gongura", name: "Gongura", subtitle: "Sorrel leaf pickle",
     description: "Distinctive tang and deep savoury flavour inspired by Andhra kitchens.",
     price: 6.99, tone: "green",
-    image: "https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=900&q=85"
+    image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=900&q=85"
   },
   {
     id: "usirikaya", name: "Usirikaya", subtitle: "Indian gooseberry pickle",
@@ -176,7 +176,15 @@ export default function Home() {
         <p className="concept-note">Concept collection for design review. Recipes, availability, pack sizes and prices are provisional.</p>
       </section>
 
-      <section className="story-band" id="story">
+
+      <section className="heritage-note">
+        <div className="heritage-rule"><span>✳</span></div>
+        <p className="eyebrow">A NOTE ON OUR ROOTS</p>
+        <h2>Not just a side.<br /><em>A story worth sharing.</em></h2>
+        <p>Across India, every region brings its own ingredients, methods and memories to the pickle jar. URAGAYA begins in Andhra Pradesh, with a respect for those traditions and a clear ambition to share them thoughtfully.</p>
+        <a className="text-link" href="#story">Get to know URAGAYA <ArrowRight size={16} /></a>
+      </section>
+\n      <section className="story-band" id="story">
         <div className="story-image" role="img" aria-label="Traditional Indian ingredients arranged on a kitchen table" />
         <div className="story-copy"><p className="eyebrow light">OUR ROOTS, OUR PROMISE</p><h2>A taste of home.<br />Wherever you are.</h2><p>Every region has its own way with a pickle. URAGAYA begins in Andhra Pradesh, celebrating the bold flavours, patient craft and food traditions that bring people back to the table.</p><a className="button button-light" href="#quality">What matters to us <ArrowRight size={16} /></a></div>
       </section>
