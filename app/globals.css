@@ -229,3 +229,13 @@ h2 { font-family: var(--serif); font-size: clamp(29px,3.3vw,43px); font-weight: 
   .product-description { font-size: 10px; }
   .footer { gap: 25px 14px; }
 }
+/* Heritage editorial interlude */
+.heritage-note { padding: 76px 24px 82px; text-align: center; background: #f1e7d7; border-top: 1px solid #e1d1ba; border-bottom: 1px solid #e1d1ba; }
+.heritage-rule { display: flex; align-items: center; justify-content: center; gap: 16px; margin-bottom: 24px; color: var(--maroon); font-size: 20px; }
+.heritage-rule::before, .heritage-rule::after { content: ""; display: block; width: 54px; height: 1px; background: #c7a98b; }
+.heritage-note .eyebrow { margin-bottom: 13px; }
+.heritage-note h2 { font-size: clamp(32px,4vw,48px); }
+.heritage-note h2 em { color: var(--maroon); font-weight: 400; }
+.heritage-note > p:not(.eyebrow) { max-width: 600px; margin: 20px auto 25px; color: var(--muted); font-size: 13px; line-height: 1.95; }
+.heritage-note .text-link { margin: 0 auto; }
+@media (max-width: 800px) { .heritage-note { padding: 54px 7% 58px; } }
