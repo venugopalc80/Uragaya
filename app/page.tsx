@@ -38,7 +38,7 @@ const products: Product[] = [
     image: "https://images.unsplash.com/photo-1615485500704-8e990f9900f2?auto=format&fit=crop&w=900&q=85"
   },
   {
-    id: "garlic", name: " వెల్లుల్లి · Garlic", subtitle: "Garlic and spice pickle",
+    id: "garlic", name: "Garlic", subtitle: "Garlic and spice pickle",
     description: "A warming, aromatic pickle for rice, flatbreads and savoury plates.",
     price: 6.99, tone: "cream",
     image: "https://images.unsplash.com/photo-1540148426945-6cf22a6b2383?auto=format&fit=crop&w=900&q=85"
@@ -117,7 +117,7 @@ export default function Home() {
             </select>
           </label>
           <button className="icon-button" aria-label="Search products" onClick={() => setSearchOpen(!searchOpen)}><Search size={19} /></button>
-          <button className="bag-button" aria-label={`Shopping bag, ${cartCount} items`} onClick={() => document.getElementById("bag")?.showModal()}>
+          <button className="bag-button" aria-label={`Shopping bag, ${cartCount} items`} onClick={() => document.querySelector<HTMLDialogElement>("#bag")?.showModal()}>
             <ShoppingBag size={19} /><span>{cartCount}</span>
           </button>
         </div>
@@ -210,7 +210,7 @@ export default function Home() {
       </footer>
 
       <dialog id="bag" className="bag-dialog">
-        <div className="bag-head"><div><p className="eyebrow">YOUR SELECTION</p><h2>Your bag ({cartCount})</h2></div><button className="icon-button" onClick={() => document.getElementById("bag")?.close()} aria-label="Close bag"><X /></button></div>
+        <div className="bag-head"><div><p className="eyebrow">YOUR SELECTION</p><h2>Your bag ({cartCount})</h2></div><button className="icon-button" onClick={() => document.querySelector<HTMLDialogElement>("#bag")?.close()} aria-label="Close bag"><X /></button></div>
         <div className="bag-items">
           {cartCount === 0 ? <p>Your bag is waiting for a little flavour.</p> : products.filter((product) => cart[product.id]).map((product) => <div className="bag-item" key={product.id}><img src={product.image} alt="" /><div><strong>{product.name}</strong><small>{formatPrice(product.price)} · concept price</small><div className="quantity-control"><button onClick={() => setCart((current) => { const next = { ...current }; if (next[product.id] <= 1) delete next[product.id]; else next[product.id]--; return next; })} aria-label={`Remove one ${product.name}`}><Minus size={14} /></button><span>{cart[product.id]}</span><button onClick={() => setCart((current) => ({ ...current, [product.id]: current[product.id] + 1 }))} aria-label={`Add one ${product.name}`}><Plus size={14} /></button></div></div><strong>{formatPrice(product.price * cart[product.id])}</strong></div>)}
         </div>
