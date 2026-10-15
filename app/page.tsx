@@ -225,7 +225,8 @@ export default function Home() {
         <p>Across India, every region brings its own ingredients, methods and memories to the pickle jar. URAGAYA begins in Andhra Pradesh, with a respect for those traditions and a clear ambition to share them thoughtfully.</p>
         <a className="text-link" href="#story">Get to know URAGAYA <ArrowRight size={16} /></a>
       </section>
-\n      <section className="story-band" id="story">
+
+      <section className="story-band" id="story">
         <div className="story-image" role="img" aria-label="Traditional Indian ingredients arranged on a kitchen table" />
         <div className="story-copy"><p className="eyebrow light">OUR ROOTS, OUR PROMISE</p><h2>A taste of home.<br />Wherever you are.</h2><p>Every region has its own way with a pickle. URAGAYA begins in Andhra Pradesh, celebrating the bold flavours, patient craft and food traditions that bring people back to the table.</p><a className="button button-light" href="#quality">What matters to us <ArrowRight size={16} /></a></div>
       </section>
