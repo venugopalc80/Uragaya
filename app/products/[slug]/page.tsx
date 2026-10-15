@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useParams } from "next/navigation";
 import { useState } from "react";
 import { ArrowLeft, ArrowRight, Check, Leaf, Minus, Plus, ShieldCheck, Truck } from "lucide-react";
 
@@ -18,7 +19,8 @@ const catalogue = [
 
 const formatPrice = (price: number) => new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP" }).format(price);
 
-export default function ProductPage({ params }: { params: { slug: string } }) {
+export default function ProductPage() {
+  const params = useParams<{ slug: string }>();
   const product = catalogue.find((item) => item.id === params.slug);
   const [quantity, setQuantity] = useState(1);
   const [message, setMessage] = useState("");
