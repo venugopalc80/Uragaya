@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ArrowLeft, ArrowRight, Check, Leaf, Minus, Plus, ShieldCheck, Truck } from "lucide-react";
 
 const catalogue = [
@@ -25,6 +25,16 @@ export default function ProductPage() {
   const [quantity, setQuantity] = useState(1);
   const [message, setMessage] = useState("");
 
+  useEffect(() => {
+    const saved = window.localStorage.getItem("uragaya-cart");
+    if (saved) {
+      try {
+        const cart = JSON.parse(saved) as Record<string, number>;
+        if (cart[product?.id ?? ""]) setQuantity((current) => Math.max(current, cart[product?.id ?? ""]));
+      } catch { window.localStorage.removeItem("uragaya-cart"); }
+    }
+  }, [product?.id]);
+
   if (!product) {
     return <main className="product-detail-page"><Link className="text-link" href="/#shop"><ArrowLeft size={16} /> Back to the collection</Link><h1>We couldn't find that pickle.</h1><p>Explore the current concept collection instead.</p><Link className="button button-primary" href="/#shop">Browse pickles <ArrowRight size={16} /></Link></main>;
   }
@@ -44,7 +54,7 @@ export default function ProductPage() {
           <p className="product-detail-price">{formatPrice(product.price)} <span>indicative concept price</span></p>
           <p className="product-detail-description">{product.description}</p>
           <div className="product-detail-quantity"><span>Quantity</span><div><button onClick={() => setQuantity((value) => Math.max(1, value - 1))} aria-label="Decrease quantity"><Minus size={15} /></button><strong>{quantity}</strong><button onClick={() => setQuantity((value) => Math.min(10, value + 1))} aria-label="Increase quantity"><Plus size={15} /></button></div></div>
-          <button className="button button-primary product-detail-add" onClick={() => setMessage("This product is still a concept. Checkout and ordering will be enabled after the product details and fulfilment are confirmed.")}>Add to bag <ArrowRight size={16} /></button>
+          <button className="button button-primary product-detail-add" onClick={() => { const saved = window.localStorage.getItem("uragaya-cart"); let cart: Record<string, number> = {}; try { cart = saved ? JSON.parse(saved) as Record<string, number> : {}; } catch { cart = {}; } cart[product.id] = Math.min(99, (cart[product.id] || 0) + quantity); window.localStorage.setItem("uragaya-cart", JSON.stringify(cart)); setMessage(`${quantity} × ${product.name} saved to your bag. Orders are not live yet; checkout will be enabled after product and fulfilment details are confirmed.`); }}>Add to bag <ArrowRight size={16} /></button>
           {message && <p className="product-detail-notice" role="status">{message}</p>}
           <p className="product-detail-disclaimer">This is a design-stage product page. The button does not place an order.</p>
           <div className="product-detail-benefits"><div><Leaf size={18} /><span>Regional inspiration</span></div><div><ShieldCheck size={18} /><span>Ingredients to be confirmed</span></div><div><Truck size={18} /><span>Shipping eligibility to be confirmed</span></div></div>
