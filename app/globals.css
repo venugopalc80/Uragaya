@@ -296,3 +296,13 @@ h2 { font-family: var(--serif); font-size: clamp(29px,3.3vw,43px); font-weight: 
   .product-detail-information aside { padding: 22px; }
   .product-card-actions { justify-content: flex-start; }
 }
+
+/* Launch information FAQ */
+.faq-section { background: #fbf7ef; }
+.faq-list { border-top: 1px solid var(--line); max-width: 920px; margin: 30px auto 0; }
+.faq-list details { border-bottom: 1px solid var(--line); padding: 0; }
+.faq-list summary { list-style: none; cursor: pointer; position: relative; padding: 22px 42px 22px 0; font-family: var(--serif); font-size: clamp(17px,2vw,21px); color: var(--ink); }
+.faq-list summary::-webkit-details-marker { display: none; }
+.faq-list summary::after { content: "+"; position: absolute; right: 7px; top: 50%; transform: translateY(-50%); color: var(--maroon); font-family: sans-serif; font-size: 25px; font-weight: 300; }
+.faq-list details[open] summary::after { content: "−"; }
+.faq-list details p { max-width: 760px; margin: -3px 35px 23px 0; color: var(--muted); font-size: 13px; line-height: 1.9; }
