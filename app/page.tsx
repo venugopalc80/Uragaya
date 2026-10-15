@@ -252,7 +252,7 @@ export default function Home() {
 
       <section className="newsletter">
         <div><p className="eyebrow light">A NOTE FROM OUR PANTRY</p><h2>New flavours, stories<br />and recipes. Occasionally.</h2></div>
-        <form onSubmit={(event) => { event.preventDefault(); setNotice("Thanks for your interest. Newsletter sign-up will be connected at launch."); }}><label htmlFor="newsletter-email">Your email address</label><div className="newsletter-input"><input id="newsletter-email" type="email" required placeholder="you@example.com" /><button type="submit" aria-label="Subscribe"><ArrowRight /></button></div><small>By subscribing, you agree to receive brand updates. You can unsubscribe anytime.</small></form>
+        <div className="newsletter-coming-soon"><p>Our launch updates are being prepared.</p><small>Newsletter sign-up will open when our mailing list and consent preferences are ready.</small></div>
       </section>
 
       <footer className="footer">
