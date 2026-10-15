@@ -85,6 +85,7 @@ const formatPrice = (price: number) =>
 
 export default function Home() {
   const [cart, setCart] = useState<Record<string, number>>({});
+  const [cartLoaded, setCartLoaded] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [query, setQuery] = useState("");
@@ -96,11 +97,12 @@ export default function Home() {
       const saved = window.localStorage.getItem("uragaya-cart");
       if (saved) setCart(JSON.parse(saved) as Record<string, number>);
     } catch { window.localStorage.removeItem("uragaya-cart"); }
+    setCartLoaded(true);
   }, []);
 
   useEffect(() => {
-    window.localStorage.setItem("uragaya-cart", JSON.stringify(cart));
-  }, [cart]);
+    if (cartLoaded) window.localStorage.setItem("uragaya-cart", JSON.stringify(cart));
+  }, [cart, cartLoaded]);
 
   const cartCount = Object.values(cart).reduce((sum, quantity) => sum + quantity, 0);
   const visibleProducts = useMemo(
