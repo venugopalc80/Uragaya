@@ -306,3 +306,7 @@ h2 { font-family: var(--serif); font-size: clamp(29px,3.3vw,43px); font-weight: 
 .faq-list summary::after { content: "+"; position: absolute; right: 7px; top: 50%; transform: translateY(-50%); color: var(--maroon); font-family: sans-serif; font-size: 25px; font-weight: 300; }
 .faq-list details[open] summary::after { content: "−"; }
 .faq-list details p { max-width: 760px; margin: -3px 35px 23px 0; color: var(--muted); font-size: 13px; line-height: 1.9; }
+
+.newsletter-coming-soon { width: min(100%, 400px); border-left: 2px solid #c7a45a; padding: 8px 0 8px 20px; }
+.newsletter-coming-soon p { margin: 0 0 8px; color: #fff7ec; font-family: var(--serif); font-size: 20px; }
+.newsletter-coming-soon small { display: block; color: #ead9cc; font-size: 11px; line-height: 1.8; }
