@@ -245,6 +245,18 @@ export default function Home() {
         <div className="shipping-detail"><p>We'll open shipping destinations only after checking local food-import rules, labelling requirements, carrier availability and delivery costs. Your checkout should always make the destination and delivery terms clear.</p><p className="shipping-small">Worldwide ambition. Destination-specific availability.</p></div>
       </section>
 
+
+      <section className="faq-section section-wrap" id="faq">
+        <div className="section-heading"><div><p className="eyebrow">GOOD TO KNOW</p><h2>A few things worth knowing.</h2><p className="section-intro">Clear answers as URAGAYA prepares for launch.</p></div></div>
+        <div className="faq-list">
+          <details><summary>Will URAGAYA sell vegetarian and non-vegetarian pickles?</summary><p>Yes. Both ranges will sit under the URAGAYA brand, with clear vegetarian and non-vegetarian labels. The final launch range is still being confirmed.</p></details>
+          <details><summary>Can I place an order today?</summary><p>Not yet. The current website is a design-stage storefront. Checkout will be enabled after products, prices, stock, payment processing and fulfilment are ready.</p></details>
+          <details><summary>Where will URAGAYA ship?</summary><p>Shipping destinations will be announced only after we confirm import rules, food restrictions, carrier availability, delivery costs and the requirements for each product.</p></details>
+          <details><summary>Where can I find ingredients and allergen information?</summary><p>Full ingredient lists, allergen declarations, nutrition information, storage instructions and shelf-life details will be published for each product after recipes and processes are validated.</p></details>
+          <details><summary>Are the products and prices on this site final?</summary><p>No. Product names, images, pack sizes, recipes and prices are currently illustrative concepts and may change before launch.</p></details>
+        </div>
+      </section>
+
       <section className="newsletter">
         <div><p className="eyebrow light">A NOTE FROM OUR PANTRY</p><h2>New flavours, stories<br />and recipes. Occasionally.</h2></div>
         <form onSubmit={(event) => { event.preventDefault(); setNotice("Thanks for your interest. Newsletter sign-up will be connected at launch."); }}><label htmlFor="newsletter-email">Your email address</label><div className="newsletter-input"><input id="newsletter-email" type="email" required placeholder="you@example.com" /><button type="submit" aria-label="Subscribe"><ArrowRight /></button></div><small>By subscribing, you agree to receive brand updates. You can unsubscribe anytime.</small></form>
@@ -253,7 +265,7 @@ export default function Home() {
       <footer className="footer">
         <div className="footer-brand"><a className="wordmark wordmark-footer" href="#"><span className="brand-symbol">❧</span><span><strong>URAGAYA</strong><small>INDIAN PICKLES FOR THE WORLD</small></span></a><p>Timeless flavours. Global tables.</p></div>
         <div><strong>Explore</strong><a href="#shop">Shop pickles</a><a href="#story">Our story</a><a href="#recipes">Recipes</a></div>
-        <div><strong>Help</strong><a href="#shipping">Shipping information</a><a href="mailto:hello@uragaya.com">Contact</a><a href="#quality">Ingredients & quality</a></div>
+        <div><strong>Help</strong><a href="#shipping">Shipping information</a><a href="#faq">FAQs</a><a href="mailto:hello@uragaya.com">Contact</a><a href="#quality">Ingredients & quality</a></div>
         <div><strong>Follow the flavour</strong><p className="footer-small">Regional Indian flavours, thoughtfully brought to the table.</p><span className="footer-country"><Globe2 size={15} /> {currency} · English</span></div>
         <div className="footer-bottom"><span>© {new Date().getFullYear()} URAGAYA. Brand concept in development.</span><span>Privacy · Terms · Accessibility</span></div>
       </footer>
