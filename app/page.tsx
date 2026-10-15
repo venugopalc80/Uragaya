@@ -90,7 +90,6 @@ export default function Home() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<"All" | "Vegetarian" | "Non-vegetarian">("All");
-  const [currency, setCurrency] = useState("GBP");
   const [notice, setNotice] = useState("");
   useEffect(() => {
     try {
@@ -145,14 +144,7 @@ export default function Home() {
           <a href="#shipping">Shipping</a>
         </nav>
         <div className="header-actions">
-          <label className="currency-select"><Globe2 size={15} />
-            <select value={currency} onChange={(event) => setCurrency(event.target.value)} aria-label="Display currency">
-              <option value="GBP">GBP (£)</option>
-              <option value="USD">USD ($)</option>
-              <option value="EUR">EUR (€)</option>
-              <option value="INR">INR (₹)</option>
-            </select>
-          </label>
+          <span className="currency-select" aria-label="Prices displayed in British pounds"><Globe2 size={15} /> GBP (£)</span>
           <button className="icon-button" aria-label="Search products" onClick={() => setSearchOpen(!searchOpen)}><Search size={19} /></button>
           <button className="bag-button" aria-label={`Shopping bag, ${cartCount} items`} onClick={() => document.querySelector<HTMLDialogElement>("#bag")?.showModal()}>
             <ShoppingBag size={19} /><span>{cartCount}</span>
@@ -267,7 +259,7 @@ export default function Home() {
         <div className="footer-brand"><a className="wordmark wordmark-footer" href="#"><span className="brand-symbol">❧</span><span><strong>URAGAYA</strong><small>INDIAN PICKLES FOR THE WORLD</small></span></a><p>Timeless flavours. Global tables.</p></div>
         <div><strong>Explore</strong><a href="#shop">Shop pickles</a><a href="#story">Our story</a><a href="#recipes">Recipes</a></div>
         <div><strong>Help</strong><a href="#shipping">Shipping information</a><a href="#faq">FAQs</a><a href="mailto:hello@uragaya.com">Contact</a><a href="#quality">Ingredients & quality</a></div>
-        <div><strong>Follow the flavour</strong><p className="footer-small">Regional Indian flavours, thoughtfully brought to the table.</p><span className="footer-country"><Globe2 size={15} /> {currency} · English</span></div>
+        <div><strong>Follow the flavour</strong><p className="footer-small">Regional Indian flavours, thoughtfully brought to the table.</p><span className="footer-country"><Globe2 size={15} /> GBP (£) · English</span></div>
         <div className="footer-bottom"><span>© {new Date().getFullYear()} URAGAYA. Brand concept in development.</span><span>Privacy · Terms · Accessibility</span></div>
       </footer>
 
