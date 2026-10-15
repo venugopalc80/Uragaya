@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   ArrowDownRight, ArrowRight, Check, ChevronDown, Globe2, Leaf, Menu,
   Minus, Plus, Search, ShieldCheck, ShoppingBag, Truck, X
@@ -91,6 +91,17 @@ export default function Home() {
   const [category, setCategory] = useState<"All" | "Vegetarian" | "Non-vegetarian">("All");
   const [currency, setCurrency] = useState("GBP");
   const [notice, setNotice] = useState("");
+  useEffect(() => {
+    try {
+      const saved = window.localStorage.getItem("uragaya-cart");
+      if (saved) setCart(JSON.parse(saved) as Record<string, number>);
+    } catch { window.localStorage.removeItem("uragaya-cart"); }
+  }, []);
+
+  useEffect(() => {
+    window.localStorage.setItem("uragaya-cart", JSON.stringify(cart));
+  }, [cart]);
+
   const cartCount = Object.values(cart).reduce((sum, quantity) => sum + quantity, 0);
   const visibleProducts = useMemo(
     () => products.filter((product) =>
