@@ -23,59 +23,59 @@ const products: Product[] = [
     id: "avakaya", name: "Avakaya", subtitle: "Andhra raw mango pickle", category: "Vegetarian",
     description: "A bold Andhra classic with raw mango, chilli and mustard.",
     price: 6.99, tone: "rust",
-    image: "https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=900&q=85",
+    image: "/images/products/avakaya.webp",
     tag: "Signature"
   },
   {
     id: "gongura", name: "Gongura", subtitle: "Sorrel leaf pickle", category: "Vegetarian",
     description: "Distinctive tang and deep savoury flavour inspired by Andhra kitchens.",
     price: 6.99, tone: "green",
-    image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=900&q=85"
+    image: "/images/products/gongura.webp"
   },
   {
     id: "usirikaya", name: "Usirikaya", subtitle: "Indian gooseberry pickle", category: "Vegetarian",
     description: "A bright, punchy regional favourite with a satisfying tang.",
     price: 6.99, tone: "gold",
-    image: "https://images.unsplash.com/photo-1615485500704-8e990f9900f2?auto=format&fit=crop&w=900&q=85"
+    image: "/images/products/usirikaya.webp"
   },
   {
     id: "garlic", name: "Garlic", subtitle: "Garlic and spice pickle", category: "Vegetarian",
     description: "A warming, aromatic pickle for rice, flatbreads and savoury plates.",
     price: 6.99, tone: "cream",
-    image: "https://images.unsplash.com/photo-1540148426945-6cf22a6b2383?auto=format&fit=crop&w=900&q=85"
+    image: "/images/products/garlic.webp"
   },
   {
     id: "chhundo", name: "Chhundo", subtitle: "Gujarati-style mango relish", category: "Vegetarian",
     description: "A sweet-tangy mango profile to balance spicy and savoury meals.",
     price: 6.99, tone: "gold",
-    image: "https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=900&q=85",
+    image: "/images/products/chhundo.webp",
     tag: "Regional favourite"
   },
   {
     id: "ker-sangri", name: "Ker-Sangri", subtitle: "Rajasthani desert pickle", category: "Vegetarian",
     description: "A distinctive regional recipe celebrating India's desert pantry.",
     price: 7.49, tone: "green",
-    image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=900&q=85"
+    image: "/images/products/ker-sangri.webp"
   }
   ,{
     id: "chicken", name: "Chicken Pickle", subtitle: "Andhra-style chicken pickle",
     description: "A bold, savoury regional favourite with a chilli-forward character.",
     price: 8.99, tone: "rust", category: "Non-vegetarian",
-    image: "https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?auto=format&fit=crop&w=900&q=85",
+    image: "/images/products/chicken.webp",
     tag: "Non-vegetarian"
   },
   {
     id: "mutton", name: "Mutton Pickle", subtitle: "Spiced mutton pickle",
     description: "A rich, savoury concept inspired by regional meat-pickle traditions.",
     price: 9.99, tone: "green", category: "Non-vegetarian",
-    image: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=900&q=85",
+    image: "/images/products/mutton.webp",
     tag: "Non-vegetarian"
   },
   {
     id: "prawn", name: "Prawn Pickle", subtitle: "Coastal-style prawn pickle",
     description: "A coastal-inspired concept with a bold seafood and spice profile.",
     price: 9.99, tone: "gold", category: "Non-vegetarian",
-    image: "https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?auto=format&fit=crop&w=900&q=85",
+    image: "/images/products/prawn.webp",
     tag: "Non-vegetarian"
   }
 ];
