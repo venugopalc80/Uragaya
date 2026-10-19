@@ -32,7 +32,10 @@ button { cursor: pointer; }
 .nav a:hover, .nav a.active { color: var(--maroon); }
 .nav a.active { border-bottom: 1px solid var(--maroon); }
 .header-actions { display: flex; align-items: center; gap: 14px; }
-.currency-select { display: flex; align-items: center; gap: 6px; font-size: 11px; }
+.currency-select { display: flex; align-items: center; gap: 6px; font-size: 11px; white-space: nowrap; }
+.currency-select select { max-width: 142px; border: 0; background: transparent; color: inherit; font: inherit; cursor: pointer; outline-offset: 3px; }
+.currency-select select option { color: #24251e; background: #fbf8f1; }
+@media (max-width: 720px) { .currency-select { gap: 3px; } .currency-select select { max-width: 108px; } }
 .currency-select select { border: 0; background: transparent; color: var(--ink); outline-offset: 4px; }
 .icon-button, .bag-button { background: none; border: 0; color: var(--ink); padding: 5px; display: inline-flex; align-items: center; justify-content: center; }
 .bag-button { position: relative; gap: 3px; }
