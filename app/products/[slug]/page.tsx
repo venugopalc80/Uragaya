@@ -17,13 +17,40 @@ const catalogue = [
   { id: "prawn", name: "Prawn Pickle", subtitle: "Coastal-style prawn pickle", category: "Non-vegetarian", price: 9.99, tone: "gold", image: "/images/products/prawn.webp", description: "A coastal-inspired prawn pickle concept with a bold seafood and spice profile.", notes: ["Coastal-inspired concept profile", "Seafood product requiring clear crustacean allergen information", "Requires validated processing and storage controls before sale"] }
 ];
 
-const formatPrice = (price: number) => new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP" }).format(price);
+type MarketCode = "GB" | "IN" | "US" | "EU" | "AU";
+const markets: Record<MarketCode, { label: string; currency: string; locale: string; display: string }> = {
+  GB: { label: "United Kingdom", currency: "GBP", locale: "en-GB", display: "UK · GBP (£)" },
+  IN: { label: "India", currency: "INR", locale: "en-IN", display: "India · INR (₹)" },
+  US: { label: "United States", currency: "USD", locale: "en-US", display: "US · USD ($)" },
+  EU: { label: "Eurozone", currency: "EUR", locale: "en-IE", display: "Eurozone · EUR (€)" },
+  AU: { label: "Australia", currency: "AUD", locale: "en-AU", display: "Australia · AUD (A$)" }
+};
+const marketPrices: Record<string, Partial<Record<MarketCode, number>>> = {
+  avakaya: { GB: 6.99, IN: 599, US: 9.99, EU: 8.49, AU: 14.99 },
+  gongura: { GB: 6.99, IN: 579, US: 9.99, EU: 8.49, AU: 14.99 },
+  usirikaya: { GB: 6.99, IN: 549, US: 9.49, EU: 8.49, AU: 14.49 },
+  garlic: { GB: 6.99, IN: 499, US: 9.49, EU: 8.49, AU: 14.49 },
+  chhundo: { GB: 6.99, IN: 499, US: 9.49, EU: 8.49, AU: 14.49 },
+  "ker-sangri": { GB: 7.49, IN: 649, US: 10.49, EU: 8.99, AU: 15.99 },
+  chicken: { GB: 8.99, IN: 799, US: 12.99, EU: 10.99, AU: 19.99 },
+  mutton: { GB: 9.99, IN: 899, US: 14.49, EU: 11.99, AU: 21.99 },
+  prawn: { GB: 9.99, IN: 849, US: 13.99, EU: 11.99, AU: 20.99 }
+};
+const getMarketPrice = (product: (typeof catalogue)[number], market: MarketCode) => marketPrices[product.id]?.[market] ?? product.price;
+const formatPrice = (price: number, market: MarketCode) =>
+  new Intl.NumberFormat(markets[market].locale, { style: "currency", currency: markets[market].currency, maximumFractionDigits: 2 }).format(price);
 
 export default function ProductPage() {
   const params = useParams<{ slug: string }>();
   const product = catalogue.find((item) => item.id === params.slug);
   const [quantity, setQuantity] = useState(1);
   const [message, setMessage] = useState("");
+  const [market, setMarket] = useState<MarketCode>("GB");
+
+  useEffect(() => {
+    const savedMarket = window.localStorage.getItem("uragaya-market");
+    if (savedMarket && savedMarket in markets) setMarket(savedMarket as MarketCode);
+  }, []);
 
   useEffect(() => {
     const saved = window.localStorage.getItem("uragaya-cart");
@@ -41,7 +68,7 @@ export default function ProductPage() {
 
   return (
     <main className="product-detail-page">
-      <div className="product-detail-top"><Link className="text-link" href="/#shop"><ArrowLeft size={16} /> Back to all pickles</Link><span>URAGAYA · PRODUCT CONCEPT</span></div>
+      <div className="product-detail-top"><Link className="text-link" href="/#shop"><ArrowLeft size={16} /> Back to all pickles</Link><label className="currency-select" aria-label="Select shopping market"><span>◎</span><select value={market} onChange={(event) => { const next = event.target.value as MarketCode; setMarket(next); window.localStorage.setItem("uragaya-market", next); }} aria-label="Shopping market">{Object.entries(markets).map(([code, item]) => <option key={code} value={code}>{item.display}</option>)}</select></label></div>
       <section className="product-detail-layout">
         <div className={`product-detail-photo product-${product.tone}`}>
           <img src={product.image} alt={`${product.name} concept photography`} />
@@ -51,10 +78,10 @@ export default function ProductPage() {
           <p className="eyebrow">THE URAGAYA PANTRY</p>
           <h1>{product.name}</h1>
           <p className="product-detail-subtitle">{product.subtitle}</p>
-          <p className="product-detail-price">{formatPrice(product.price)} <span>indicative concept price</span></p>
+          <p className="product-detail-price">{formatPrice(getMarketPrice(product, market), market)} <span>indicative concept price</span></p>
           <p className="product-detail-description">{product.description}</p>
           <div className="product-detail-quantity"><span>Quantity</span><div><button onClick={() => setQuantity((value) => Math.max(1, value - 1))} aria-label="Decrease quantity"><Minus size={15} /></button><strong>{quantity}</strong><button onClick={() => setQuantity((value) => Math.min(10, value + 1))} aria-label="Increase quantity"><Plus size={15} /></button></div></div>
-          <button className="button button-primary product-detail-add" onClick={() => { const saved = window.localStorage.getItem("uragaya-cart"); let cart: Record<string, number> = {}; try { cart = saved ? JSON.parse(saved) as Record<string, number> : {}; } catch { cart = {}; } cart[product.id] = Math.min(99, (cart[product.id] || 0) + quantity); window.localStorage.setItem("uragaya-cart", JSON.stringify(cart)); setMessage(`${quantity} × ${product.name} saved to your bag. Orders are not live yet; checkout will be enabled after product and fulfilment details are confirmed.`); }}>Add to bag <ArrowRight size={16} /></button>
+          <button className="button button-primary product-detail-add" onClick={() => { window.localStorage.setItem("uragaya-market", market); const saved = window.localStorage.getItem("uragaya-cart"); let cart: Record<string, number> = {}; try { cart = saved ? JSON.parse(saved) as Record<string, number> : {}; } catch { cart = {}; } cart[product.id] = Math.min(99, (cart[product.id] || 0) + quantity); window.localStorage.setItem("uragaya-cart", JSON.stringify(cart)); setMessage(`${quantity} × ${product.name} saved to your bag. Orders are not live yet; checkout will be enabled after product and fulfilment details are confirmed.`); }}>Add to bag <ArrowRight size={16} /></button>
           {message && <p className="product-detail-notice" role="status">{message}</p>}
           <p className="product-detail-disclaimer">This is a design-stage product page. The button does not place an order.</p>
           <div className="product-detail-benefits"><div><Leaf size={18} /><span>Regional inspiration</span></div><div><ShieldCheck size={18} /><span>Ingredients to be confirmed</span></div><div><Truck size={18} /><span>Shipping eligibility to be confirmed</span></div></div>
