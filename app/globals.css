@@ -105,7 +105,7 @@ h2 { font-family: var(--serif); font-size: clamp(29px,3.3vw,43px); font-weight: 
 .origin-stamp { position: absolute; right: 22px; bottom: 22px; background: var(--paper); color: var(--maroon); width: 104px; height: 104px; display: grid; align-content: center; justify-content: center; text-align: center; font-size: 9px; letter-spacing: .15em; line-height: 1.5; border: 1px solid #d9c6ad; }
 .origin-stamp strong { font-size: 13px; }
 .recipe-section { display: grid; grid-template-columns: 1.05fr .95fr; background: #f0e6d6; }
-.recipe-image { min-height: 370px; background: url('/images/products/avakaya.webp') center/cover; }
+.recipe-image { min-height: 370px; background: url('/images/products/usirikaya.webp') center/cover; }
 .recipe-copy { align-self: center; padding: clamp(36px,6vw,80px); }
 .recipe-copy > p:not(.eyebrow) { color: var(--muted); font-size: 13px; line-height: 1.9; max-width: 430px; margin: 18px 0 25px; }
 .shipping-section { display: grid; grid-template-columns: 1fr .8fr; align-items: center; gap: 9%; }
