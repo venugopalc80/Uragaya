@@ -113,6 +113,14 @@ export default function Home() {
   const [notice, setNotice] = useState("");
   const [market, setMarket] = useState<MarketCode>("GB");
   useEffect(() => {
+    const savedMarket = window.localStorage.getItem("uragaya-market");
+    if (savedMarket && savedMarket in markets) setMarket(savedMarket as MarketCode);
+  }, []);
+  useEffect(() => {
+    window.localStorage.setItem("uragaya-market", market);
+  }, [market]);
+
+  useEffect(() => {
     try {
       const saved = window.localStorage.getItem("uragaya-cart");
       if (saved) setCart(JSON.parse(saved) as Record<string, number>);
@@ -287,7 +295,7 @@ export default function Home() {
       <dialog id="bag" className="bag-dialog">
         <div className="bag-head"><div><p className="eyebrow">YOUR SELECTION</p><h2>Your bag ({cartCount})</h2></div><button className="icon-button" onClick={() => document.querySelector<HTMLDialogElement>("#bag")?.close()} aria-label="Close bag"><X /></button></div>
         <div className="bag-items">
-          {cartCount === 0 ? <p>Your bag is waiting for a little flavour.</p> : products.filter((product) => cart[product.id]).map((product) => <div className="bag-item" key={product.id}><img src={product.image} alt="" /><div><strong>{product.name}</strong><small>{formatPrice(product.price)} · concept price</small><div className="quantity-control"><button onClick={() => setCart((current) => { const next = { ...current }; if (next[product.id] <= 1) delete next[product.id]; else next[product.id]--; return next; })} aria-label={`Remove one ${product.name}`}><Minus size={14} /></button><span>{cart[product.id]}</span><button onClick={() => setCart((current) => ({ ...current, [product.id]: current[product.id] + 1 }))} aria-label={`Add one ${product.name}`}><Plus size={14} /></button></div></div><strong>{formatPrice(getMarketPrice(product, market) * cart[product.id], market)}</strong></div>)}
+          {cartCount === 0 ? <p>Your bag is waiting for a little flavour.</p> : products.filter((product) => cart[product.id]).map((product) => <div className="bag-item" key={product.id}><img src={product.image} alt="" /><div><strong>{product.name}</strong><small>{formatPrice(getMarketPrice(product, market), market)} · concept price</small><div className="quantity-control"><button onClick={() => setCart((current) => { const next = { ...current }; if (next[product.id] <= 1) delete next[product.id]; else next[product.id]--; return next; })} aria-label={`Remove one ${product.name}`}><Minus size={14} /></button><span>{cart[product.id]}</span><button onClick={() => setCart((current) => ({ ...current, [product.id]: current[product.id] + 1 }))} aria-label={`Add one ${product.name}`}><Plus size={14} /></button></div></div><strong>{formatPrice(getMarketPrice(product, market) * cart[product.id], market)}</strong></div>)}
         </div>
         <div className="bag-foot"><div><span>Subtotal</span><strong>{formatPrice(products.reduce((sum, product) => sum + getMarketPrice(product, market) * (cart[product.id] || 0), 0), market)}</strong></div><p>Shipping and taxes are calculated when destination-specific checkout is available.</p><button className="button button-primary full-width" onClick={() => setNotice("Checkout is not connected yet. This is a design-stage storefront.")}>Continue to checkout <ArrowRight size={16} /></button><button className="continue-shopping" onClick={() => document.querySelector<HTMLDialogElement>("#bag")?.close()}>Continue exploring</button></div>
       </dialog>
