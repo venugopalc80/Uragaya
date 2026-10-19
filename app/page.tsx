@@ -80,8 +80,28 @@ const products: Product[] = [
   }
 ];
 
-const formatPrice = (price: number) =>
-  new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP" }).format(price);
+type MarketCode = "GB" | "IN" | "US" | "EU" | "AU";
+const markets: Record<MarketCode, { label: string; currency: string; locale: string; display: string }> = {
+  GB: { label: "United Kingdom", currency: "GBP", locale: "en-GB", display: "UK · GBP (£)" },
+  IN: { label: "India", currency: "INR", locale: "en-IN", display: "India · INR (₹)" },
+  US: { label: "United States", currency: "USD", locale: "en-US", display: "US · USD ($)" },
+  EU: { label: "Eurozone", currency: "EUR", locale: "en-IE", display: "Eurozone · EUR (€)" },
+  AU: { label: "Australia", currency: "AUD", locale: "en-AU", display: "Australia · AUD (A$)" }
+};
+const marketPrices: Record<string, Partial<Record<MarketCode, number>>> = {
+  avakaya: { GB: 6.99, IN: 599, US: 9.99, EU: 8.49, AU: 14.99 },
+  gongura: { GB: 6.99, IN: 579, US: 9.99, EU: 8.49, AU: 14.99 },
+  usirikaya: { GB: 6.99, IN: 549, US: 9.49, EU: 8.49, AU: 14.49 },
+  garlic: { GB: 6.99, IN: 499, US: 9.49, EU: 8.49, AU: 14.49 },
+  chhundo: { GB: 6.99, IN: 499, US: 9.49, EU: 8.49, AU: 14.49 },
+  "ker-sangri": { GB: 7.49, IN: 649, US: 10.49, EU: 8.99, AU: 15.99 },
+  chicken: { GB: 8.99, IN: 799, US: 12.99, EU: 10.99, AU: 19.99 },
+  mutton: { GB: 9.99, IN: 899, US: 14.49, EU: 11.99, AU: 21.99 },
+  prawn: { GB: 9.99, IN: 849, US: 13.99, EU: 11.99, AU: 20.99 }
+};
+const getMarketPrice = (product: Product, market: MarketCode) => marketPrices[product.id]?.[market] ?? product.price;
+const formatPrice = (price: number, market: MarketCode) =>
+  new Intl.NumberFormat(markets[market].locale, { style: "currency", currency: markets[market].currency, maximumFractionDigits: 2 }).format(price);
 
 export default function Home() {
   const [cart, setCart] = useState<Record<string, number>>({});
@@ -91,6 +111,7 @@ export default function Home() {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<"All" | "Vegetarian" | "Non-vegetarian">("All");
   const [notice, setNotice] = useState("");
+  const [market, setMarket] = useState<MarketCode>("GB");
   useEffect(() => {
     try {
       const saved = window.localStorage.getItem("uragaya-cart");
@@ -144,7 +165,7 @@ export default function Home() {
           <a href="#shipping">Shipping</a>
         </nav>
         <div className="header-actions">
-          <span className="currency-select" aria-label="Prices displayed in British pounds"><Globe2 size={15} /> GBP (£)</span>
+          <label className="currency-select" aria-label="Select shopping market"><Globe2 size={15} /><select value={market} onChange={(event) => setMarket(event.target.value as MarketCode)} aria-label="Shopping market">{Object.entries(markets).map(([code, item]) => <option key={code} value={code}>{item.display}</option>)}</select></label>
           <button className="icon-button" aria-label="Search products" onClick={() => setSearchOpen(!searchOpen)}><Search size={19} /></button>
           <button className="bag-button" aria-label={`Shopping bag, ${cartCount} items`} onClick={() => document.querySelector<HTMLDialogElement>("#bag")?.showModal()}>
             <ShoppingBag size={19} /><span>{cartCount}</span>
@@ -199,7 +220,7 @@ export default function Home() {
                 <img src={product.image} alt={product.name + " pickle product styling"} loading={index > 2 ? "lazy" : "eager"} />
                 <button className="quick-add" onClick={() => addToCart(product)} aria-label={`Add ${product.name} to bag`}><Plus size={19} /></button>
               </div>
-              <div className="product-meta"><div><h3><a href={`/products/${product.id}`}>{product.name}</a></h3><p>{product.subtitle}</p></div><strong>{formatPrice(product.price)}</strong></div>
+              <div className="product-meta"><div><h3><a href={`/products/${product.id}`}>{product.name}</a></h3><p>{product.subtitle}</p></div><strong>{formatPrice(getMarketPrice(product, market), market)}</strong></div>
               <p className="product-description">{product.description}</p>
               <div className="product-card-actions"><a className="add-link" href={`/products/${product.id}`}>View details <ArrowRight size={15} /></a><button className="add-link" onClick={() => addToCart(product)}>Quick add <Plus size={15} /></button></div>
             </article>
@@ -259,16 +280,16 @@ export default function Home() {
         <div className="footer-brand"><a className="wordmark wordmark-footer" href="#"><span className="brand-symbol">❧</span><span><strong>URAGAYA</strong><small>INDIAN PICKLES FOR THE WORLD</small></span></a><p>Timeless flavours. Global tables.</p></div>
         <div><strong>Explore</strong><a href="#shop">Shop pickles</a><a href="#story">Our story</a><a href="#recipes">Recipes</a></div>
         <div><strong>Help</strong><a href="#shipping">Shipping information</a><a href="#faq">FAQs</a><a href="mailto:hello@uragaya.com">Contact</a><a href="#quality">Ingredients & quality</a></div>
-        <div><strong>Follow the flavour</strong><p className="footer-small">Regional Indian flavours, thoughtfully brought to the table.</p><span className="footer-country"><Globe2 size={15} /> GBP (£) · English</span></div>
+        <div><strong>Follow the flavour</strong><p className="footer-small">Regional Indian flavours, thoughtfully brought to the table.</p><span className="footer-country"><Globe2 size={15} /> {markets[market].currency} · English</span></div>
         <div className="footer-bottom"><span>© {new Date().getFullYear()} URAGAYA. Brand concept in development.</span><span>Privacy · Terms · Accessibility</span></div>
       </footer>
 
       <dialog id="bag" className="bag-dialog">
         <div className="bag-head"><div><p className="eyebrow">YOUR SELECTION</p><h2>Your bag ({cartCount})</h2></div><button className="icon-button" onClick={() => document.querySelector<HTMLDialogElement>("#bag")?.close()} aria-label="Close bag"><X /></button></div>
         <div className="bag-items">
-          {cartCount === 0 ? <p>Your bag is waiting for a little flavour.</p> : products.filter((product) => cart[product.id]).map((product) => <div className="bag-item" key={product.id}><img src={product.image} alt="" /><div><strong>{product.name}</strong><small>{formatPrice(product.price)} · concept price</small><div className="quantity-control"><button onClick={() => setCart((current) => { const next = { ...current }; if (next[product.id] <= 1) delete next[product.id]; else next[product.id]--; return next; })} aria-label={`Remove one ${product.name}`}><Minus size={14} /></button><span>{cart[product.id]}</span><button onClick={() => setCart((current) => ({ ...current, [product.id]: current[product.id] + 1 }))} aria-label={`Add one ${product.name}`}><Plus size={14} /></button></div></div><strong>{formatPrice(product.price * cart[product.id])}</strong></div>)}
+          {cartCount === 0 ? <p>Your bag is waiting for a little flavour.</p> : products.filter((product) => cart[product.id]).map((product) => <div className="bag-item" key={product.id}><img src={product.image} alt="" /><div><strong>{product.name}</strong><small>{formatPrice(product.price)} · concept price</small><div className="quantity-control"><button onClick={() => setCart((current) => { const next = { ...current }; if (next[product.id] <= 1) delete next[product.id]; else next[product.id]--; return next; })} aria-label={`Remove one ${product.name}`}><Minus size={14} /></button><span>{cart[product.id]}</span><button onClick={() => setCart((current) => ({ ...current, [product.id]: current[product.id] + 1 }))} aria-label={`Add one ${product.name}`}><Plus size={14} /></button></div></div><strong>{formatPrice(getMarketPrice(product, market) * cart[product.id], market)}</strong></div>)}
         </div>
-        <div className="bag-foot"><div><span>Subtotal</span><strong>{formatPrice(products.reduce((sum, product) => sum + product.price * (cart[product.id] || 0), 0))}</strong></div><p>Shipping and taxes are calculated when destination-specific checkout is available.</p><button className="button button-primary full-width" onClick={() => setNotice("Checkout is not connected yet. This is a design-stage storefront.")}>Continue to checkout <ArrowRight size={16} /></button><button className="continue-shopping" onClick={() => document.querySelector<HTMLDialogElement>("#bag")?.close()}>Continue exploring</button></div>
+        <div className="bag-foot"><div><span>Subtotal</span><strong>{formatPrice(products.reduce((sum, product) => sum + getMarketPrice(product, market) * (cart[product.id] || 0), 0), market)}</strong></div><p>Shipping and taxes are calculated when destination-specific checkout is available.</p><button className="button button-primary full-width" onClick={() => setNotice("Checkout is not connected yet. This is a design-stage storefront.")}>Continue to checkout <ArrowRight size={16} /></button><button className="continue-shopping" onClick={() => document.querySelector<HTMLDialogElement>("#bag")?.close()}>Continue exploring</button></div>
       </dialog>
 
       {notice && <div className="toast" role="status"><Check size={17} />{notice}<button onClick={() => setNotice("")} aria-label="Dismiss notification"><X size={15} /></button></div>}
