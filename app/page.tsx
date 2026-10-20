@@ -135,6 +135,74 @@ export default function Home() {
     if (cartLoaded) window.localStorage.setItem("uragaya-cart", JSON.stringify(cart));
   }, [cart, cartLoaded]);
 
+  useEffect(() => {
+    const supabase = getSupabaseBrowserClient();
+    if (!supabase) return;
+    let cancelled = false;
+
+    async function loadActiveProducts() {
+      if (!supabase) return;
+      const { data, error } = await supabase
+        .from("products")
+        .select("slug,name,subtitle,description,category,image_url")
+        .eq("active", true)
+        .order("name");
+      if (cancelled || error || !data || data.length === 0) return;
+
+      const mapped: Product[] = data.map((row) => {
+        const fallback = conceptProducts.find((item) => item.id === row.slug);
+        return {
+          id: row.slug,
+          name: row.name,
+          subtitle: row.subtitle || fallback?.subtitle || "",
+          description: row.description || fallback?.description || "",
+          category: row.category === "Non-vegetarian" ? "Non-vegetarian" : "Vegetarian",
+          price: fallback?.price ?? 0,
+          tone: fallback?.tone ?? "cream",
+          image: row.image_url || fallback?.image || "",
+          tag: fallback?.tag,
+        };
+      });
+      if (!cancelled) setProducts(mapped);
+    }
+
+    loadActiveProducts();
+    return () => { cancelled = true; };
+  }, []);
+
+  useEffect(() => {
+    const supabase = getSupabaseBrowserClient();
+    if (!supabase) return;
+    let cancelled = false;
+
+    async function loadMarketPrices() {
+      if (!supabase) return;
+      const now = new Date().toISOString();
+      const { data, error } = await supabase
+        .from("market_prices")
+        .select("amount_minor_units,market_code,products!inner(slug)")
+        .eq("active", true)
+        .eq("market_code", market)
+        .lte("effective_from", now)
+        .or("effective_until.is.null,effective_until.gt." + now);
+      if (cancelled || error || !data) return;
+
+      const next: Record<string, Partial<Record<MarketCode, number>>> = {};
+      for (const row of data as Array<{ products: { slug: string } | { slug: string }[]; market_code: MarketCode; amount_minor_units: number }>) {
+        const relation = Array.isArray(row.products) ? row.products[0] : row.products;
+        if (!relation?.slug) continue;
+        next[relation.slug] = {
+          ...(next[relation.slug] || {}),
+          [row.market_code]: Number(row.amount_minor_units) / 100,
+        };
+      }
+      if (!cancelled) setDatabasePrices(next);
+    }
+
+    loadMarketPrices();
+    return () => { cancelled = true; };
+  }, [market]);
+
   const cartCount = Object.values(cart).reduce((sum, quantity) => sum + quantity, 0);
   const priceFor = (product: Product) => databasePrices[product.id]?.[market] ?? getMarketPrice(product, market);
   const visibleProducts = useMemo(
