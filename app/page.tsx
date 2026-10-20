@@ -398,24 +398,24 @@ export default function Home() {
             </button>)}
           </div>
           {customisingProductId && <div className="customise-selected-product">{(() => { const item = products.find((p) => p.id === customisingProductId); return item ? <><img src={item.image} alt={item.name} /><div><strong>{item.name}</strong><span>{item.subtitle}</span><span>{formatPrice(priceFor(item), market)} · indicative concept price</span></div></> : null; })()}</div>}
-          <div className="customise-section-title"><span>01</span><div><strong>Choose your heat</strong><p>Personalised spice levels are not available yet.</p></div></div>
+          <div className="customise-section-title"><span>01</span><div><strong>Choose your heat</strong><p>These choices are disabled for now. You can still add the current standard recipe below.</p></div></div>
           <div className="heat-options">
-            <button type="button" className="heat-option" disabled><span className="heat-meter"><Flame size={15}/><i>01 / 04</i></span><strong>Mild</strong><small>Gentle warmth</small><em>Coming soon</em></button>
+            <button type="button" className="heat-option" disabled><span className="heat-meter"><Flame size={15}/><i>01 / 04</i></span><strong>Mild</strong><small>Gentle warmth</small><em>Unavailable</em></button>
             <button type="button" className="heat-option" disabled><span className="heat-meter"><Flame size={15}/><Flame size={15}/><i>02 / 04</i></span><strong>Medium</strong><small>Balanced kick</small><em>Coming soon</em></button>
             <button type="button" className="heat-option" disabled><span className="heat-meter"><Flame size={15}/><Flame size={15}/><Flame size={15}/><i>03 / 04</i></span><strong>Hot</strong><small>Bold and fiery</small><em>Coming soon</em></button>
             <button type="button" className="heat-option" disabled><span className="heat-meter"><Flame size={15}/><Flame size={15}/><Flame size={15}/><Flame size={15}/><i>04 / 04</i></span><strong>Extra hot</strong><small>For heat lovers</small><em>Coming soon</em></button>
           </div>
           <div className="customise-section-title"><span>02</span><div><strong>Flavour profile</strong><p>Only validated recipe profiles will be offered.</p></div></div>
           <div className="flavour-options">
-            <button type="button" disabled>Balanced <small>Coming soon</small></button>
-            <button type="button" disabled>Tangy <small>Coming soon</small></button>
-            <button type="button" disabled>Mustard-forward <small>Coming soon</small></button>
+            <button type="button" disabled>Balanced <small>Unavailable</small></button>
+            <button type="button" disabled>Tangy <small>Unavailable</small></button>
+            <button type="button" disabled>Mustard-forward <small>Unavailable</small></button>
           </div>
           <div className="customise-section-title"><span>03</span><div><strong>Quantity</strong><p>How many jars would you like?</p></div></div>
           <div className="customise-quantity"><button type="button" onClick={() => setCustomisingQuantity((q) => Math.max(1, q - 1))} disabled={customisingQuantity <= 1} aria-label="Decrease quantity"><Minus size={16} /></button><strong>{customisingQuantity}</strong><button type="button" onClick={() => setCustomisingQuantity((q) => Math.min(10, q + 1))} disabled={customisingQuantity >= 10} aria-label="Increase quantity"><Plus size={16} /></button><span>jar{customisingQuantity === 1 ? "" : "s"}</span></div>
           <div className="customise-current-recipe"><Check size={16} /><span><strong>Current standard recipe</strong><small>Personalised heat and flavour options are unavailable until recipes are confirmed.</small></span></div>
           {customiseMessage && <p className="customise-success" role="status">{customiseMessage}</p>}
-          <button className="button button-primary full-width" disabled={!customisingProductId} onClick={addCustomisedToCart}>Add {customisingQuantity} to bag <ArrowRight size={16} /></button>
+          <button className="button button-primary full-width" disabled={!customisingProductId} onClick={addCustomisedToCart}>Add standard recipe · {customisingQuantity} to bag <ArrowRight size={16} /></button>
           <p className="product-detail-disclaimer">After adding, this drawer stays open so you can choose another pickle. All prices are indicative and checkout is not live.</p>
         </div>
       </dialog>
