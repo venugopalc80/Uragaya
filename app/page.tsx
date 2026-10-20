@@ -18,7 +18,7 @@ type Product = {
   category: "Vegetarian" | "Non-vegetarian";
 };
 
-const products: Product[] = [
+const conceptProducts: Product[] = [
   {
     id: "avakaya", name: "Avakaya", subtitle: "Andhra raw mango pickle", category: "Vegetarian",
     description: "A bold Andhra classic with raw mango, chilli and mustard.",
@@ -104,7 +104,7 @@ const formatPrice = (price: number, market: MarketCode) =>
   new Intl.NumberFormat(markets[market].locale, { style: "currency", currency: markets[market].currency, maximumFractionDigits: 2 }).format(price);
 
 export default function Home() {
-  const [cart, setCart] = useState<Record<string, number>>({});
+  const [products, setProducts] = useState<Product[]>(conceptProducts);\n  const [databasePrices, setDatabasePrices] = useState<Record<string, Partial<Record<MarketCode, number>>>>({});\n  const [cart, setCart] = useState<Record<string, number>>({});
   const [cartLoaded, setCartLoaded] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -132,7 +132,7 @@ export default function Home() {
     if (cartLoaded) window.localStorage.setItem("uragaya-cart", JSON.stringify(cart));
   }, [cart, cartLoaded]);
 
-  const cartCount = Object.values(cart).reduce((sum, quantity) => sum + quantity, 0);
+  const cartCount = Object.values(cart).reduce((sum, quantity) => sum + quantity, 0);\n  const priceFor = (product: Product) => databasePrices[product.id]?.[market] ?? getMarketPrice(product, market);
   const visibleProducts = useMemo(
     () => products.filter((product) =>
       (category === "All" || product.category === category) &&
