@@ -82,6 +82,14 @@ const conceptProducts: Product[] = [
 ];
 
 type MarketCode = "GB" | "IN" | "US" | "EU" | "AU";
+type SpiceLevel = "mild" | "medium" | "hot" | "extra-hot";
+const spiceLabels: Record<SpiceLevel, string> = { mild: "Mild", medium: "Medium", hot: "Hot", "extra-hot": "Extra hot" };
+const cartLineKey = (productId: string, spice: SpiceLevel = "medium") => `${productId}::${spice}`;
+const parseCartLineKey = (key: string): { productId: string; spice: SpiceLevel } => {
+  const [productId, candidate] = key.split("::");
+  const spice = (candidate && candidate in spiceLabels ? candidate : "medium") as SpiceLevel;
+  return { productId, spice };
+};
 const markets: Record<MarketCode, { label: string; currency: string; locale: string; display: string }> = {
   GB: { label: "United Kingdom", currency: "GBP", locale: "en-GB", display: "UK · GBP (£)" },
   IN: { label: "India", currency: "INR", locale: "en-IN", display: "India · INR (₹)" },
@@ -367,9 +375,9 @@ export default function Home() {
       <dialog id="bag" className="bag-dialog">
         <div className="bag-head"><div><p className="eyebrow">YOUR SELECTION</p><h2>Your bag ({cartCount})</h2></div><button className="icon-button" onClick={() => document.querySelector<HTMLDialogElement>("#bag")?.close()} aria-label="Close bag"><X /></button></div>
         <div className="bag-items">
-          {cartCount === 0 ? <p>Your bag is waiting for a little flavour.</p> : products.filter((product) => cart[product.id]).map((product) => <div className="bag-item" key={product.id}><img src={product.image} alt="" /><div><strong>{product.name}</strong><small>{formatPrice(getMarketPrice(product, market), market)} · concept price</small><div className="quantity-control"><button onClick={() => setCart((current) => { const next = { ...current }; if (next[product.id] <= 1) delete next[product.id]; else next[product.id]--; return next; })} aria-label={`Remove one ${product.name}`}><Minus size={14} /></button><span>{cart[product.id]}</span><button onClick={() => setCart((current) => ({ ...current, [product.id]: current[product.id] + 1 }))} aria-label={`Add one ${product.name}`}><Plus size={14} /></button></div></div><strong>{formatPrice(getMarketPrice(product, market) * cart[product.id], market)}</strong></div>)}
+          {cartCount === 0 ? <p>Your bag is waiting for a little flavour.</p> : Object.entries(cart).map(([lineKey, quantity]) => { const { productId, spice } = parseCartLineKey(lineKey); const product = products.find((item) => item.id === productId); if (!product || quantity <= 0) return null; return <div className="bag-item" key={lineKey}><img src={product.image} alt="" /><div><strong>{product.name}</strong><small>{spiceLabels[spice]} spice · {formatPrice(priceFor(product), market)} · concept price</small><div className="quantity-control"><button onClick={() => setCart((current) => { const next = { ...current }; if (next[lineKey] <= 1) delete next[lineKey]; else next[lineKey]--; return next; })} aria-label={`Remove one ${product.name}`}><Minus size={14} /></button><span>{quantity}</span><button onClick={() => setCart((current) => ({ ...current, [lineKey]: current[lineKey] + 1 }))} aria-label={`Add one ${product.name}`}><Plus size={14} /></button></div></div><strong>{formatPrice(priceFor(product) * quantity, market)}</strong></div>; })}
         </div>
-        <div className="bag-foot"><div><span>Subtotal</span><strong>{formatPrice(products.reduce((sum, product) => sum + getMarketPrice(product, market) * (cart[product.id] || 0), 0), market)}</strong></div><p>Shipping and taxes are calculated when destination-specific checkout is available.</p><button className="button button-primary full-width" onClick={() => setNotice("Checkout is not connected yet. This is a design-stage storefront.")}>Continue to checkout <ArrowRight size={16} /></button><button className="continue-shopping" onClick={() => document.querySelector<HTMLDialogElement>("#bag")?.close()}>Continue exploring</button></div>
+        <div className="bag-foot"><div><span>Subtotal</span><strong>{formatPrice(Object.entries(cart).reduce((sum, [lineKey, quantity]) => { const { productId } = parseCartLineKey(lineKey); const product = products.find((item) => item.id === productId); return sum + (product ? priceFor(product) * quantity : 0); }, 0), market)}</strong></div><p>Shipping and taxes are calculated when destination-specific checkout is available.</p><button className="button button-primary full-width" onClick={() => setNotice("Checkout is not connected yet. This is a design-stage storefront.")}>Continue to checkout <ArrowRight size={16} /></button><button className="continue-shopping" onClick={() => document.querySelector<HTMLDialogElement>("#bag")?.close()}>Continue exploring</button></div>
       </dialog>
 
       {notice && <div className="toast" role="status"><Check size={17} />{notice}<button onClick={() => setNotice("")} aria-label="Dismiss notification"><X size={15} /></button></div>}
