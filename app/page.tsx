@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { getSupabaseBrowserClient } from "@/lib/supabase/client";
 import {
-  ArrowDownRight, ArrowRight, Check, ChevronDown, Globe2, Leaf, Menu,
+  ArrowDownRight, ArrowRight, Check, ChevronDown, Flame, Globe2, Leaf, Menu,
   Minus, Plus, Search, ShieldCheck, ShoppingBag, Truck, X
 } from "lucide-react";
 
