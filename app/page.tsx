@@ -223,7 +223,7 @@ export default function Home() {
       (category === "All" || product.category === category) &&
       (product.name + " " + product.subtitle + " " + product.category).toLowerCase().includes(query.toLowerCase())
     ),
-    [query, category]
+    [products, query, category]
   );
 
   function openCustomiser(product: Product) {
@@ -324,7 +324,7 @@ export default function Home() {
                 <img src={product.image} alt={product.name + " pickle product styling"} loading={index > 2 ? "lazy" : "eager"} />
                 <button className="quick-add" onClick={() => openCustomiser(product)} aria-label={`Choose spice for ${product.name}`}><Plus size={19} /></button>
               </div>
-              <div className="product-meta"><div><h3><a href={`/products/${product.id}`}>{product.name}</a></h3><p>{product.subtitle}</p></div><strong>{formatPrice(getMarketPrice(product, market), market)}</strong></div>
+              <div className="product-meta"><div><h3><a href={`/products/${product.id}`}>{product.name}</a></h3><p>{product.subtitle}</p></div><strong>{formatPrice(priceFor(product), market)}</strong></div>
               <p className="product-description">{product.description}</p>
               <div className="product-card-actions"><a className="add-link" href={`/products/${product.id}`}>View details <ArrowRight size={15} /></a><button className="add-link" onClick={() => openCustomiser(product)}>Quick add <Plus size={15} /></button></div>
             </article>
