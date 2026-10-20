@@ -320,3 +320,21 @@ h2 { font-family: var(--serif); font-size: clamp(29px,3.3vw,43px); font-weight: 
 .product-spice-picker label { display: block; margin: 8px 0; font-size: 13px; font-weight: 600; color: var(--ink); }
 .product-spice-picker select { width: 100%; min-height: 46px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 2px; background: #fffaf2; color: var(--ink); font: inherit; }
 .product-spice-picker .product-detail-disclaimer { margin: 10px 0 0; font-size: 11px; line-height: 1.7; color: var(--muted); }
+
+/* Quick-add customisation drawer */
+.customise-dialog { position: fixed; inset: 0 0 0 auto; margin: 0 0 0 auto; width: min(430px, 100%); height: 100dvh; max-height: 100dvh; border: 0; padding: 0; color: var(--ink); background: var(--paper); box-shadow: -20px 0 70px #160e0d30; }
+.customise-dialog::backdrop { background: #17150f80; backdrop-filter: blur(3px); }
+.customise-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; padding: 25px 24px; border-bottom: 1px solid var(--line); }
+.customise-head h2 { font-size: 28px; line-height: 1.12; }
+.customise-head .eyebrow { margin-bottom: 8px; }
+.customise-body { padding: 24px; display: flex; flex-direction: column; gap: 12px; }
+.customise-body label { margin-top: 8px; font-size: 12px; font-weight: 600; }
+.customise-body select { width: 100%; min-height: 48px; padding: 12px; border: 1px solid var(--line); border-radius: 2px; background: #fffaf2; color: var(--ink); font: inherit; }
+.customise-selected-product { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.customise-selected-product img { width: 68px; height: 68px; object-fit: cover; background: #eee3d1; }
+.customise-selected-product strong, .customise-selected-product span { display: block; }
+.customise-selected-product span { margin-top: 5px; color: var(--muted); font-size: 11px; }
+.customise-success { padding: 10px 12px; background: #e9efe4; color: #31452b; font-size: 12px; line-height: 1.5; }
+.customise-body .button:disabled { opacity: .45; cursor: not-allowed; }
+.product-card-actions .add-link { border: 0; background: transparent; cursor: pointer; font: inherit; }
+@media (max-width: 600px) { .customise-dialog { width: 100%; } .customise-head, .customise-body { padding: 20px; } }
