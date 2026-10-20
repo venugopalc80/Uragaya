@@ -181,7 +181,8 @@ h2 { font-family: var(--serif); font-size: clamp(29px,3.3vw,43px); font-weight: 
   .nav.nav-open { display: flex; }
   .nav a { padding: 13px 0; border-bottom: 1px solid var(--line); font-size: 13px; }
   .header-actions { margin-left: auto; }
-  .currency-select { display: none; }
+  .currency-select { display: inline-flex; gap: 3px; font-size: 9px; max-width: 112px; }
+  .currency-select select { max-width: 88px; font-size: 9px; }
   .hero { min-height: 540px; align-items: end; }
   .hero-image { background-position: 62% center; }
   .hero-shade { background: linear-gradient(0deg,rgba(20,23,15,.92),rgba(20,23,15,.25) 100%); }
