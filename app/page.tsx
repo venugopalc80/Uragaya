@@ -307,11 +307,11 @@ export default function Home() {
                 <span className={product.category === "Vegetarian" ? "diet-badge veg-badge" : "diet-badge nonveg-badge"}>{product.category === "Vegetarian" ? "VEGETARIAN" : "NON-VEGETARIAN"}</span>
                 {product.tag && <span className="product-tag">{product.tag}</span>}
                 <img src={product.image} alt={product.name + " pickle product styling"} loading={index > 2 ? "lazy" : "eager"} />
-                <button className="quick-add" onClick={() => addToCart(product)} aria-label={`Add ${product.name} to bag`}><Plus size={19} /></button>
+                <a className="quick-add" href={`/products/${product.id}`} aria-label={`Choose spice for ${product.name}`}><Plus size={19} /></a>
               </div>
               <div className="product-meta"><div><h3><a href={`/products/${product.id}`}>{product.name}</a></h3><p>{product.subtitle}</p></div><strong>{formatPrice(getMarketPrice(product, market), market)}</strong></div>
               <p className="product-description">{product.description}</p>
-              <div className="product-card-actions"><a className="add-link" href={`/products/${product.id}`}>View details <ArrowRight size={15} /></a><button className="add-link" onClick={() => addToCart(product)}>Quick add <Plus size={15} /></button></div>
+              <div className="product-card-actions"><a className="add-link" href={`/products/${product.id}`}>View details <ArrowRight size={15} /></a><a className="add-link" href={`/products/${product.id}`}>Choose spice <Plus size={15} /></a></div>
             </article>
           ))}
           {visibleProducts.length === 0 && <p className="empty-state">No flavours found. Try mango, garlic or gongura.</p>}
