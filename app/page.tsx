@@ -222,8 +222,9 @@ export default function Home() {
   );
 
   function addToCart(product: Product) {
-    setCart((current) => ({ ...current, [product.id]: (current[product.id] || 0) + 1 }));
-    setNotice(product.name + " added to your bag");
+    const lineKey = cartLineKey(product.id, "medium");
+    setCart((current) => ({ ...current, [lineKey]: (current[lineKey] || 0) + 1 }));
+    setNotice(product.name + " (Medium spice) added to your bag");
     window.setTimeout(() => setNotice(""), 2400);
   }
 
