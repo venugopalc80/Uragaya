@@ -391,18 +391,19 @@ export default function Home() {
       <dialog id="customise-product" className="customise-dialog">
         <div className="customise-head"><div><p className="eyebrow">URAGAYA · MAKE IT YOURS</p><h2>Build your pickle selection</h2><p className="customise-intro">Choose a jar now. Personalised recipes are coming after validation.</p></div><button className="icon-button" onClick={() => document.querySelector<HTMLDialogElement>("#customise-product")?.close()} aria-label="Close customiser"><X /></button></div>
         <div className="customise-body">
-          <label htmlFor="customise-product-choice">Your pickle</label>
-          <select id="customise-product-choice" value={customisingProductId ?? ""} onChange={(event) => { setCustomisingProductId(event.target.value); setCustomisingSpice("standard"); setCustomiseMessage(""); }}>
-            <option value="" disabled>Select a product</option>
-            {products.map((item) => <option key={item.id} value={item.id}>{item.name}</option>)}
-          </select>
+          <div className="customise-picker-heading"><label>Choose your pickle</label><span>{products.length} varieties</span></div>
+          <div className="customise-product-rail" role="group" aria-label="Choose a pickle">
+            {products.map((item) => <button type="button" key={item.id} className={`customise-product-tile ${customisingProductId === item.id ? "is-selected" : ""}`} aria-pressed={customisingProductId === item.id} onClick={() => { setCustomisingProductId(item.id); setCustomisingSpice("standard"); setCustomiseMessage(""); }}>
+              <img src={item.image} alt="" /><span>{item.name}</span><small>{formatPrice(priceFor(item), market)}</small>{customisingProductId === item.id && <Check size={14} aria-label="Selected" />}
+            </button>)}
+          </div>
           {customisingProductId && <div className="customise-selected-product">{(() => { const item = products.find((p) => p.id === customisingProductId); return item ? <><img src={item.image} alt={item.name} /><div><strong>{item.name}</strong><span>{item.subtitle}</span><span>{formatPrice(priceFor(item), market)} · indicative concept price</span></div></> : null; })()}</div>}
           <div className="customise-section-title"><span>01</span><div><strong>Choose your heat</strong><p>Personalised spice levels are not available yet.</p></div></div>
           <div className="heat-options">
-            <button type="button" className="heat-option" disabled><span className="heat-chillies">🌶</span><strong>Mild</strong><small>Gentle warmth</small><em>Coming soon</em></button>
-            <button type="button" className="heat-option" disabled><span className="heat-chillies">🌶🌶</span><strong>Medium</strong><small>Balanced kick</small><em>Coming soon</em></button>
-            <button type="button" className="heat-option" disabled><span className="heat-chillies">🌶🌶🌶</span><strong>Hot</strong><small>Bold and fiery</small><em>Coming soon</em></button>
-            <button type="button" className="heat-option" disabled><span className="heat-chillies">🌶🌶🌶🌶</span><strong>Extra hot</strong><small>For heat lovers</small><em>Coming soon</em></button>
+            <button type="button" className="heat-option" disabled><span className="heat-meter"><Flame size={15}/><i>01 / 04</i></span><strong>Mild</strong><small>Gentle warmth</small><em>Coming soon</em></button>
+            <button type="button" className="heat-option" disabled><span className="heat-meter"><Flame size={15}/><Flame size={15}/><i>02 / 04</i></span><strong>Medium</strong><small>Balanced kick</small><em>Coming soon</em></button>
+            <button type="button" className="heat-option" disabled><span className="heat-meter"><Flame size={15}/><Flame size={15}/><Flame size={15}/><i>03 / 04</i></span><strong>Hot</strong><small>Bold and fiery</small><em>Coming soon</em></button>
+            <button type="button" className="heat-option" disabled><span className="heat-meter"><Flame size={15}/><Flame size={15}/><Flame size={15}/><Flame size={15}/><i>04 / 04</i></span><strong>Extra hot</strong><small>For heat lovers</small><em>Coming soon</em></button>
           </div>
           <div className="customise-section-title"><span>02</span><div><strong>Flavour profile</strong><p>Only validated recipe profiles will be offered.</p></div></div>
           <div className="flavour-options">
