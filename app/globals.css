@@ -338,3 +338,31 @@ h2 { font-family: var(--serif); font-size: clamp(29px,3.3vw,43px); font-weight: 
 .customise-body .button:disabled { opacity: .45; cursor: not-allowed; }
 .product-card-actions .add-link { border: 0; background: transparent; cursor: pointer; font: inherit; }
 @media (max-width: 600px) { .customise-dialog { width: 100%; } .customise-head, .customise-body { padding: 20px; } }
+
+/* URAGAYA Make It Yours: recipe-safe quick-add experience */
+.customise-intro { margin-top: 8px; max-width: 270px; color: var(--muted); font-size: 12px; line-height: 1.6; }
+.customise-dialog { overflow-y: auto; }
+.customise-body { gap: 14px; padding-bottom: 32px; }
+.customise-section-title { display: flex; align-items: flex-start; gap: 11px; margin-top: 8px; }
+.customise-section-title > span { display: grid; place-items: center; flex: 0 0 25px; width: 25px; height: 25px; border-radius: 50%; background: #762d2c; color: #fffaf2; font-size: 10px; }
+.customise-section-title strong { display: block; font-family: var(--serif); font-size: 17px; font-weight: 600; }
+.customise-section-title p { margin-top: 3px; color: var(--muted); font-size: 11px; line-height: 1.5; }
+.heat-options { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 9px; }
+.heat-option { display: flex; flex-direction: column; align-items: flex-start; gap: 5px; min-height: 118px; padding: 12px; border: 1px solid var(--line); background: #f6f0e7; color: var(--ink); text-align: left; opacity: .68; cursor: not-allowed; }
+.heat-option .heat-chillies { min-height: 20px; font-size: 13px; letter-spacing: -4px; }
+.heat-option strong { font-size: 13px; }
+.heat-option small { color: var(--muted); font-size: 10px; }
+.heat-option em { margin-top: auto; color: #762d2c; font-size: 9px; font-style: normal; text-transform: uppercase; letter-spacing: .08em; }
+.flavour-options { display: grid; grid-template-columns: 1fr; gap: 7px; }
+.flavour-options button { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 11px 12px; border: 1px solid var(--line); background: #f6f0e7; color: var(--ink); text-align: left; opacity: .68; cursor: not-allowed; font: inherit; font-size: 12px; }
+.flavour-options small { color: #762d2c; font-size: 9px; text-transform: uppercase; letter-spacing: .06em; }
+.customise-quantity { display: flex; align-items: center; gap: 15px; }
+.customise-quantity button { display: grid; place-items: center; width: 36px; height: 36px; border: 1px solid var(--line); background: transparent; color: var(--ink); }
+.customise-quantity button:disabled { opacity: .35; cursor: not-allowed; }
+.customise-quantity strong { min-width: 18px; text-align: center; font-variant-numeric: tabular-nums; }
+.customise-quantity span { color: var(--muted); font-size: 11px; }
+.customise-current-recipe { display: flex; align-items: flex-start; gap: 10px; padding: 13px; background: #e9efe4; color: #31452b; }
+.customise-current-recipe > svg { flex: 0 0 auto; margin-top: 2px; }
+.customise-current-recipe strong, .customise-current-recipe small { display: block; }
+.customise-current-recipe strong { font-size: 12px; }
+.customise-current-recipe small { margin-top: 4px; font-size: 10px; line-height: 1.5; }
