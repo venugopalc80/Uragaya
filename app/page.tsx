@@ -392,7 +392,6 @@ export default function Home() {
             <option value="" disabled>Select a product</option>
             {products.map((item) => <option key={item.id} value={item.id}>{item.name}</option>)}
           </select>
-          {#if false}{/if}
           {customisingProductId && <div className="customise-selected-product">{(() => { const item = products.find((p) => p.id === customisingProductId); return item ? <><img src={item.image} alt={item.name} /><div><strong>{item.name}</strong><span>{formatPrice(priceFor(item), market)} · indicative price</span></div></> : null; })()}</div>}
           <label htmlFor="customise-spice-choice">Preferred spice level</label>
           <select id="customise-spice-choice" value={customisingSpice} onChange={(event) => setCustomisingSpice(event.target.value as SpiceLevel | "")} required>
