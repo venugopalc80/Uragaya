@@ -366,3 +366,32 @@ h2 { font-family: var(--serif); font-size: clamp(29px,3.3vw,43px); font-weight: 
 .customise-current-recipe strong, .customise-current-recipe small { display: block; }
 .customise-current-recipe strong { font-size: 12px; }
 .customise-current-recipe small { margin-top: 4px; font-size: 10px; line-height: 1.5; }
+
+/* Faster product switching and compact premium drawer layout */
+.customise-dialog .customise-head { padding: 20px 22px 17px; }
+.customise-dialog .customise-head h2 { font-size: clamp(25px, 3vw, 30px); }
+.customise-dialog .customise-body { gap: 10px; padding: 18px 22px 26px; }
+.customise-picker-heading { display:flex; justify-content:space-between; align-items:center; gap:12px; }
+.customise-picker-heading label { margin:0; }
+.customise-picker-heading span { color:var(--muted); font-size:10px; }
+.customise-product-rail { display:flex; gap:9px; overflow-x:auto; padding: 2px 1px 8px; scroll-snap-type:x mandatory; scrollbar-width:thin; }
+.customise-product-tile { position:relative; display:flex; flex:0 0 88px; flex-direction:column; align-items:flex-start; gap:5px; padding:7px; border:1px solid var(--line); background:#fffaf2; color:var(--ink); text-align:left; scroll-snap-align:start; cursor:pointer; }
+.customise-product-tile img { width:100%; height:66px; object-fit:contain; background:#f0e8dc; }
+.customise-product-tile span { font-size:11px; font-weight:600; white-space:nowrap; }
+.customise-product-tile small { color:var(--muted); font-size:9px; }
+.customise-product-tile > svg { position:absolute; top:5px; right:5px; padding:2px; border-radius:50%; color:#fff; background:#762d2c; }
+.customise-product-tile.is-selected { border-color:#762d2c; box-shadow:inset 0 0 0 1px #762d2c; background:#f3e8dc; }
+.customise-selected-product { padding:8px 0 11px; }
+.customise-selected-product img { width:58px; height:58px; }
+.customise-section-title { margin-top:4px; gap:9px; }
+.customise-section-title > span { flex-basis:23px; width:23px; height:23px; }
+.customise-section-title strong { font-size:16px; }
+.heat-option { min-height:100px; padding:10px; gap:4px; }
+.heat-meter { display:flex; align-items:center; gap:2px; min-height:19px; color:#8c4b36; }
+.heat-meter i { margin-left:auto; color:var(--muted); font-size:8px; font-style:normal; letter-spacing:.03em; }
+.customise-body .product-detail-disclaimer { font-size:10px; line-height:1.5; }
+@media (max-width:600px) {
+ .customise-dialog .customise-head { padding:18px 18px 14px; }
+ .customise-dialog .customise-body { padding:15px 18px 24px; }
+ .customise-product-tile { flex-basis:82px; }
+}
