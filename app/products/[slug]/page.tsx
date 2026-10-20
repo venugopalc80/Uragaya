@@ -56,6 +56,7 @@ export default function ProductPage() {
     if (!supabase || !params.slug) return;
     let cancelled = false;
     async function loadProduct() {
+      if (!supabase) return;
       const { data, error } = await supabase
         .from("products")
         .select("slug,name,subtitle,description,category,image_url")
@@ -81,6 +82,7 @@ export default function ProductPage() {
     if (!supabase || !params.slug) return;
     let cancelled = false;
     async function loadPrice() {
+      if (!supabase) return;
       const now = new Date().toISOString();
       const { data: productRow } = await supabase
         .from("products")
