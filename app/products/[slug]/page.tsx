@@ -50,7 +50,7 @@ export default function ProductPage() {
   const [databasePrice, setDatabasePrice] = useState<number | null>(null);
   const product = fallbackProduct ? { ...fallbackProduct, ...(databaseProduct || {}) } : undefined;
   const [quantity, setQuantity] = useState(1);
-  const [spice, setSpice] = useState<SpiceLevel>("medium");
+  const [spice, setSpice] = useState<SpiceLevel | "">("");
   const [message, setMessage] = useState("");
   const [market, setMarket] = useState<MarketCode>("IN");
 
@@ -127,10 +127,10 @@ export default function ProductPage() {
       try {
         const cart = JSON.parse(saved) as Record<string, number>;
         const lineKey = `${product?.id ?? ""}::${spice}`;
-        if (cart[lineKey]) setQuantity((current) => Math.max(current, cart[lineKey]));
+        if (spice && cart[lineKey]) setQuantity((current) => Math.max(current, cart[lineKey]));
       } catch { window.localStorage.removeItem("uragaya-cart"); }
     }
-  }, [product?.id]);
+  }, [product?.id, spice]);
 
   if (!product) {
     return <main className="product-detail-page"><Link className="text-link" href="/#shop"><ArrowLeft size={16} /> Back to the collection</Link><h1>We couldn't find that pickle.</h1><p>Explore the current concept collection instead.</p><Link className="button button-primary" href="/#shop">Browse pickles <ArrowRight size={16} /></Link></main>;
@@ -150,7 +150,7 @@ export default function ProductPage() {
           <p className="product-detail-subtitle">{product.subtitle}</p>
           <p className="product-detail-price">{formatPrice(databasePrice ?? getMarketPrice(product, market), market)} <span>{databasePrice === null ? "indicative concept price" : "market price"}</span></p>
           <p className="product-detail-description">{product.description}</p>
-          <div className="product-spice-picker"><p className="eyebrow">MAKE IT YOUR KIND OF HEAT</p><label htmlFor="spice-level">Preferred spice level</label><select id="spice-level" value={spice} onChange={(event) => setSpice(event.target.value as SpiceLevel)}><option value="mild">Mild — gentle warmth</option><option value="medium">Medium — balanced heat</option><option value="hot">Hot — bold chilli kick</option><option value="extra-hot">Extra hot — serious heat</option></select><p className="product-detail-disclaimer">Preference preview only. Final spice variants depend on recipe validation and manufacturing availability.</p></div><div className="product-detail-quantity"><span>Quantity</span><div><button onClick={() => setQuantity((value) => Math.max(1, value - 1))} aria-label="Decrease quantity"><Minus size={15} /></button><strong>{quantity}</strong><button onClick={() => setQuantity((value) => Math.min(10, value + 1))} aria-label="Increase quantity"><Plus size={15} /></button></div></div>
+          <div className="product-spice-picker"><p className="eyebrow">MAKE IT YOUR KIND OF HEAT</p><label htmlFor="spice-level">Preferred spice level</label><select id="spice-level" value={spice} required onChange={(event) => setSpice(event.target.value as SpiceLevel | "")}><option value="" disabled>Choose your preferred heat</option><option value="mild">Mild — gentle warmth</option><option value="medium">Medium — balanced heat</option><option value="hot">Hot — bold chilli kick</option><option value="extra-hot">Extra hot — serious heat</option></select><p className="product-detail-disclaimer">Preference preview only. Final spice variants depend on recipe validation and manufacturing availability.</p></div><div className="product-detail-quantity"><span>Quantity</span><div><button onClick={() => setQuantity((value) => Math.max(1, value - 1))} aria-label="Decrease quantity"><Minus size={15} /></button><strong>{quantity}</strong><button onClick={() => setQuantity((value) => Math.min(10, value + 1))} aria-label="Increase quantity"><Plus size={15} /></button></div></div>
           <button className="button button-primary product-detail-add" onClick={() => { window.localStorage.setItem("uragaya-market", market); const saved = window.localStorage.getItem("uragaya-cart"); let cart: Record<string, number> = {}; try { cart = saved ? JSON.parse(saved) as Record<string, number> : {}; } catch { cart = {}; } const lineKey = `${product.id}::${spice}`; cart[lineKey] = Math.min(99, (cart[lineKey] || 0) + quantity); window.localStorage.setItem("uragaya-cart", JSON.stringify(cart)); setMessage(`${quantity} × ${product.name} (${spiceLabels[spice]} spice) saved to your bag. This is a preference preview; orders are not live yet.`); }}>Add to bag <ArrowRight size={16} /></button>
           {message && <p className="product-detail-notice" role="status">{message}</p>}
           <p className="product-detail-disclaimer">This is a design-stage product page. The button does not place an order.</p>
