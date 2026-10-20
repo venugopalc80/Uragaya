@@ -91,11 +91,11 @@ const parseCartLineKey = (key: string): { productId: string; spice: SpiceLevel }
   return { productId, spice };
 };
 const markets: Record<MarketCode, { label: string; currency: string; locale: string; display: string }> = {
-  GB: { label: "United Kingdom", currency: "GBP", locale: "en-GB", display: "UK · GBP (£)" },
-  IN: { label: "India", currency: "INR", locale: "en-IN", display: "India · INR (₹)" },
-  US: { label: "United States", currency: "USD", locale: "en-US", display: "US · USD ($)" },
-  EU: { label: "Eurozone", currency: "EUR", locale: "en-IE", display: "Eurozone · EUR (€)" },
-  AU: { label: "Australia", currency: "AUD", locale: "en-AU", display: "Australia · AUD (A$)" }
+  GB: { label: "United Kingdom", currency: "GBP", locale: "en-GB", display: "UK · GBP (£) · Preview" },
+  IN: { label: "India", currency: "INR", locale: "en-IN", display: "India · INR (₹) · Preview" },
+  US: { label: "United States", currency: "USD", locale: "en-US", display: "US · USD ($) · Preview" },
+  EU: { label: "Eurozone", currency: "EUR", locale: "en-IE", display: "Eurozone · EUR (€) · Preview" },
+  AU: { label: "Australia", currency: "AUD", locale: "en-AU", display: "Australia · AUD (A$) · Preview" }
 };
 const marketPrices: Record<string, Partial<Record<MarketCode, number>>> = {
   avakaya: { GB: 6.99, IN: 599, US: 9.99, EU: 8.49, AU: 14.99 },
@@ -287,7 +287,7 @@ export default function Home() {
           <a href="#shipping">Shipping</a>
         </nav>
         <div className="header-actions">
-          <label className="currency-select" aria-label="Select shopping market"><Globe2 size={15} /><select value={market} onChange={(event) => setMarket(event.target.value as MarketCode)} aria-label="Shopping market">{Object.entries(markets).map(([code, item]) => <option key={code} value={code}>{item.display}</option>)}</select></label>
+          <label className="currency-select" aria-label="Preview currency; shipping markets are not active"><Globe2 size={15} /><select value={market} onChange={(event) => setMarket(event.target.value as MarketCode)} aria-label="Shopping market">{Object.entries(markets).map(([code, item]) => <option key={code} value={code}>{item.display}</option>)}</select></label>
           <button className="icon-button" aria-label="Search products" onClick={() => setSearchOpen(!searchOpen)}><Search size={19} /></button>
           <button className="bag-button" aria-label={`Shopping bag, ${cartCount} items`} onClick={() => document.querySelector<HTMLDialogElement>("#bag")?.showModal()}>
             <ShoppingBag size={19} /><span>{cartCount}</span>
