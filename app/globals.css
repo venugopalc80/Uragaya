@@ -314,3 +314,9 @@ h2 { font-family: var(--serif); font-size: clamp(29px,3.3vw,43px); font-weight: 
 .newsletter-coming-soon { width: min(100%, 400px); border-left: 2px solid #c7a45a; padding: 8px 0 8px 20px; }
 .newsletter-coming-soon p { margin: 0 0 8px; color: #fff7ec; font-family: var(--serif); font-size: 20px; }
 .newsletter-coming-soon small { display: block; color: #ead9cc; font-size: 11px; line-height: 1.8; }
+
+/* Product customisation: preference preview, not a promise of unvalidated variants. */
+.product-spice-picker { margin: 22px 0; padding: 18px; border: 1px solid var(--line); background: rgba(255,255,255,.45); }
+.product-spice-picker label { display: block; margin: 8px 0; font-size: 13px; font-weight: 600; color: var(--ink); }
+.product-spice-picker select { width: 100%; min-height: 46px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 2px; background: #fffaf2; color: var(--ink); font: inherit; }
+.product-spice-picker .product-detail-disclaimer { margin: 10px 0 0; font-size: 11px; line-height: 1.7; color: var(--muted); }
