@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";\nimport { getSupabaseBrowserClient } from "@/lib/supabase/client";
 import {
   ArrowDownRight, ArrowRight, Check, ChevronDown, Globe2, Leaf, Menu,
   Minus, Plus, Search, ShieldCheck, ShoppingBag, Truck, X
