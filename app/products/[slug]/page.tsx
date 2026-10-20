@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { getSupabaseBrowserClient } from "@/lib/supabase/client";
 import { ArrowLeft, ArrowRight, Check, Leaf, Minus, Plus, ShieldCheck, Truck } from "lucide-react";
 
 const catalogue = [
