@@ -43,10 +43,73 @@ const formatPrice = (price: number, market: MarketCode) =>
 
 export default function ProductPage() {
   const params = useParams<{ slug: string }>();
-  const product = catalogue.find((item) => item.id === params.slug);
+  const fallbackProduct = catalogue.find((item) => item.id === params.slug);
+  const [databaseProduct, setDatabaseProduct] = useState<Partial<(typeof catalogue)[number]> | null>(null);
+  const [databasePrice, setDatabasePrice] = useState<number | null>(null);
+  const product = fallbackProduct ? { ...fallbackProduct, ...(databaseProduct || {}) } : undefined;
   const [quantity, setQuantity] = useState(1);
   const [message, setMessage] = useState("");
   const [market, setMarket] = useState<MarketCode>("IN");
+
+  useEffect(() => {
+    const supabase = getSupabaseBrowserClient();
+    if (!supabase || !params.slug) return;
+    let cancelled = false;
+    async function loadProduct() {
+      const { data, error } = await supabase
+        .from("products")
+        .select("slug,name,subtitle,description,category,image_url")
+        .eq("slug", params.slug)
+        .eq("active", true)
+        .maybeSingle();
+      if (cancelled || error || !data) return;
+      setDatabaseProduct({
+        id: data.slug,
+        name: data.name,
+        subtitle: data.subtitle || "",
+        description: data.description || "",
+        category: data.category === "Non-vegetarian" ? "Non-vegetarian" : "Vegetarian",
+        image: data.image_url || fallbackProduct?.image || "",
+      });
+    }
+    loadProduct();
+    return () => { cancelled = true; };
+  }, [params.slug]);
+
+  useEffect(() => {
+    const supabase = getSupabaseBrowserClient();
+    if (!supabase || !params.slug) return;
+    let cancelled = false;
+    async function loadPrice() {
+      const now = new Date().toISOString();
+      const { data: productRow } = await supabase
+        .from("products")
+        .select("id")
+        .eq("slug", params.slug)
+        .eq("active", true)
+        .maybeSingle();
+      if (cancelled || !productRow) {
+        if (!cancelled) setDatabasePrice(null);
+        return;
+      }
+      const { data, error } = await supabase
+        .from("market_prices")
+        .select("amount_minor_units")
+        .eq("product_id", productRow.id)
+        .eq("market_code", market)
+        .eq("active", true)
+        .lte("effective_from", now)
+        .or("effective_until.is.null,effective_until.gt." + now)
+        .order("effective_from", { ascending: false })
+        .limit(1)
+        .maybeSingle();
+      if (cancelled) return;
+      if (error || !data) { setDatabasePrice(null); return; }
+      setDatabasePrice(Number(data.amount_minor_units) / 100);
+    }
+    loadPrice();
+    return () => { cancelled = true; };
+  }, [params.slug, market]);
 
   useEffect(() => {
     const savedMarket = window.localStorage.getItem("uragaya-market");
@@ -79,7 +142,7 @@ export default function ProductPage() {
           <p className="eyebrow">THE URAGAYA PANTRY</p>
           <h1>{product.name}</h1>
           <p className="product-detail-subtitle">{product.subtitle}</p>
-          <p className="product-detail-price">{formatPrice(getMarketPrice(product, market), market)} <span>indicative concept price</span></p>
+          <p className="product-detail-price">{formatPrice(databasePrice ?? getMarketPrice(product, market), market)} <span>{databasePrice === null ? "indicative concept price" : "market price"}</span></p>
           <p className="product-detail-description">{product.description}</p>
           <div className="product-detail-quantity"><span>Quantity</span><div><button onClick={() => setQuantity((value) => Math.max(1, value - 1))} aria-label="Decrease quantity"><Minus size={15} /></button><strong>{quantity}</strong><button onClick={() => setQuantity((value) => Math.min(10, value + 1))} aria-label="Increase quantity"><Plus size={15} /></button></div></div>
           <button className="button button-primary product-detail-add" onClick={() => { window.localStorage.setItem("uragaya-market", market); const saved = window.localStorage.getItem("uragaya-cart"); let cart: Record<string, number> = {}; try { cart = saved ? JSON.parse(saved) as Record<string, number> : {}; } catch { cart = {}; } cart[product.id] = Math.min(99, (cart[product.id] || 0) + quantity); window.localStorage.setItem("uragaya-cart", JSON.stringify(cart)); setMessage(`${quantity} × ${product.name} saved to your bag. Orders are not live yet; checkout will be enabled after product and fulfilment details are confirmed.`); }}>Add to bag <ArrowRight size={16} /></button>
