@@ -126,7 +126,8 @@ export default function ProductPage() {
     if (saved) {
       try {
         const cart = JSON.parse(saved) as Record<string, number>;
-        const lineKey = `${product?.id ?? ""}::${spice}`;\n        if (cart[lineKey]) setQuantity((current) => Math.max(current, cart[lineKey]));
+        const lineKey = `${product?.id ?? ""}::${spice}`;
+        if (cart[lineKey]) setQuantity((current) => Math.max(current, cart[lineKey]));
       } catch { window.localStorage.removeItem("uragaya-cart"); }
     }
   }, [product?.id]);
