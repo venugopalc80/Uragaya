@@ -45,7 +45,7 @@ export default function ProductPage() {
   const product = catalogue.find((item) => item.id === params.slug);
   const [quantity, setQuantity] = useState(1);
   const [message, setMessage] = useState("");
-  const [market, setMarket] = useState<MarketCode>("GB");
+  const [market, setMarket] = useState<MarketCode>("IN");
 
   useEffect(() => {
     const savedMarket = window.localStorage.getItem("uragaya-market");
