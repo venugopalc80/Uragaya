@@ -111,7 +111,7 @@ export default function Home() {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<"All" | "Vegetarian" | "Non-vegetarian">("All");
   const [notice, setNotice] = useState("");
-  const [market, setMarket] = useState<MarketCode>("GB");
+  const [market, setMarket] = useState<MarketCode>("IN");
   useEffect(() => {
     const savedMarket = window.localStorage.getItem("uragaya-market");
     if (savedMarket && savedMarket in markets) setMarket(savedMarket as MarketCode);
