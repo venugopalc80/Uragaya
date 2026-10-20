@@ -122,6 +122,9 @@ export default function Home() {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<"All" | "Vegetarian" | "Non-vegetarian">("All");
   const [notice, setNotice] = useState("");
+  const [customisingProductId, setCustomisingProductId] = useState<string | null>(null);
+  const [customisingSpice, setCustomisingSpice] = useState<SpiceLevel | "">("");
+  const [customiseMessage, setCustomiseMessage] = useState("");
   const [market, setMarket] = useState<MarketCode>("IN");
   useEffect(() => {
     const savedMarket = window.localStorage.getItem("uragaya-market");
@@ -221,11 +224,19 @@ export default function Home() {
     [query, category]
   );
 
-  function addToCart(product: Product) {
-    const lineKey = cartLineKey(product.id, "medium");
+  function openCustomiser(product: Product) {
+    setCustomisingProductId(product.id);
+    setCustomisingSpice("");
+    setCustomiseMessage("");
+    document.querySelector<HTMLDialogElement>("#customise-product")?.showModal();
+  }
+
+  function addCustomisedToCart() {
+    const product = products.find((item) => item.id === customisingProductId);
+    if (!product || !customisingSpice) return;
+    const lineKey = cartLineKey(product.id, customisingSpice);
     setCart((current) => ({ ...current, [lineKey]: (current[lineKey] || 0) + 1 }));
-    setNotice(product.name + " (Medium spice) added to your bag");
-    window.setTimeout(() => setNotice(""), 2400);
+    setCustomiseMessage(`${product.name} · ${spiceLabels[customisingSpice]} spice added to your bag.`);
   }
 
   return (
@@ -307,11 +318,11 @@ export default function Home() {
                 <span className={product.category === "Vegetarian" ? "diet-badge veg-badge" : "diet-badge nonveg-badge"}>{product.category === "Vegetarian" ? "VEGETARIAN" : "NON-VEGETARIAN"}</span>
                 {product.tag && <span className="product-tag">{product.tag}</span>}
                 <img src={product.image} alt={product.name + " pickle product styling"} loading={index > 2 ? "lazy" : "eager"} />
-                <a className="quick-add" href={`/products/${product.id}`} aria-label={`Choose spice for ${product.name}`}><Plus size={19} /></a>
+                <button className="quick-add" onClick={() => openCustomiser(product)} aria-label={`Choose spice for ${product.name}`}><Plus size={19} /></button>
               </div>
               <div className="product-meta"><div><h3><a href={`/products/${product.id}`}>{product.name}</a></h3><p>{product.subtitle}</p></div><strong>{formatPrice(getMarketPrice(product, market), market)}</strong></div>
               <p className="product-description">{product.description}</p>
-              <div className="product-card-actions"><a className="add-link" href={`/products/${product.id}`}>View details <ArrowRight size={15} /></a><a className="add-link" href={`/products/${product.id}`}>Choose spice <Plus size={15} /></a></div>
+              <div className="product-card-actions"><a className="add-link" href={`/products/${product.id}`}>View details <ArrowRight size={15} /></a><button className="add-link" onClick={() => openCustomiser(product)}>Quick add <Plus size={15} /></button></div>
             </article>
           ))}
           {visibleProducts.length === 0 && <p className="empty-state">No flavours found. Try mango, garlic or gongura.</p>}
@@ -373,6 +384,26 @@ export default function Home() {
         <div className="footer-bottom"><span>© {new Date().getFullYear()} URAGAYA. Brand concept in development.</span><span>Privacy · Terms · Accessibility</span></div>
       </footer>
 
+      <dialog id="customise-product" className="customise-dialog">
+        <div className="customise-head"><div><p className="eyebrow">MAKE IT YOUR KIND OF HEAT</p><h2>Customise your pickle</h2></div><button className="icon-button" onClick={() => document.querySelector<HTMLDialogElement>("#customise-product")?.close()} aria-label="Close customiser"><X /></button></div>
+        <div className="customise-body">
+          <label htmlFor="customise-product-choice">Choose your pickle</label>
+          <select id="customise-product-choice" value={customisingProductId ?? ""} onChange={(event) => { setCustomisingProductId(event.target.value); setCustomisingSpice(""); setCustomiseMessage(""); }}>
+            <option value="" disabled>Select a product</option>
+            {products.map((item) => <option key={item.id} value={item.id}>{item.name}</option>)}
+          </select>
+          {#if false}{/if}
+          {customisingProductId && <div className="customise-selected-product">{(() => { const item = products.find((p) => p.id === customisingProductId); return item ? <><img src={item.image} alt={item.name} /><div><strong>{item.name}</strong><span>{formatPrice(priceFor(item), market)} · indicative price</span></div></> : null; })()}</div>}
+          <label htmlFor="customise-spice-choice">Preferred spice level</label>
+          <select id="customise-spice-choice" value={customisingSpice} onChange={(event) => setCustomisingSpice(event.target.value as SpiceLevel | "")} required>
+            <option value="" disabled>Choose your preferred heat</option>
+            <option value="mild">Mild — gentle warmth</option><option value="medium">Medium — balanced heat</option><option value="hot">Hot — bold chilli kick</option><option value="extra-hot">Extra hot — serious heat</option>
+          </select>
+          {customiseMessage && <p className="customise-success" role="status">{customiseMessage}</p>}
+          <button className="button button-primary full-width" disabled={!customisingProductId || !customisingSpice} onClick={addCustomisedToCart}>Add to bag <ArrowRight size={16} /></button>
+          <p className="product-detail-disclaimer">Preference preview only. Spice variants must be validated before orders open.</p>
+        </div>
+      </dialog>
       <dialog id="bag" className="bag-dialog">
         <div className="bag-head"><div><p className="eyebrow">YOUR SELECTION</p><h2>Your bag ({cartCount})</h2></div><button className="icon-button" onClick={() => document.querySelector<HTMLDialogElement>("#bag")?.close()} aria-label="Close bag"><X /></button></div>
         <div className="bag-items">
