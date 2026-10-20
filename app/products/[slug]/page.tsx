@@ -22,11 +22,11 @@ type MarketCode = "GB" | "IN" | "US" | "EU" | "AU";
 type SpiceLevel = "standard" | "mild" | "medium" | "hot" | "extra-hot";
 const spiceLabels: Record<SpiceLevel, string> = { standard: "Standard recipe", mild: "Mild", medium: "Medium", hot: "Hot", "extra-hot": "Extra hot" };
 const markets: Record<MarketCode, { label: string; currency: string; locale: string; display: string }> = {
-  GB: { label: "United Kingdom", currency: "GBP", locale: "en-GB", display: "UK · GBP (£)" },
-  IN: { label: "India", currency: "INR", locale: "en-IN", display: "India · INR (₹)" },
-  US: { label: "United States", currency: "USD", locale: "en-US", display: "US · USD ($)" },
-  EU: { label: "Eurozone", currency: "EUR", locale: "en-IE", display: "Eurozone · EUR (€)" },
-  AU: { label: "Australia", currency: "AUD", locale: "en-AU", display: "Australia · AUD (A$)" }
+  GB: { label: "United Kingdom", currency: "GBP", locale: "en-GB", display: "UK · GBP (£) · Preview" },
+  IN: { label: "India", currency: "INR", locale: "en-IN", display: "India · INR (₹) · Preview" },
+  US: { label: "United States", currency: "USD", locale: "en-US", display: "US · USD ($) · Preview" },
+  EU: { label: "Eurozone", currency: "EUR", locale: "en-IE", display: "Eurozone · EUR (€) · Preview" },
+  AU: { label: "Australia", currency: "AUD", locale: "en-AU", display: "Australia · AUD (A$) · Preview" }
 };
 const marketPrices: Record<string, Partial<Record<MarketCode, number>>> = {
   avakaya: { GB: 6.99, IN: 599, US: 9.99, EU: 8.49, AU: 14.99 },
@@ -138,7 +138,7 @@ export default function ProductPage() {
 
   return (
     <main className="product-detail-page">
-      <div className="product-detail-top"><Link className="text-link" href="/#shop"><ArrowLeft size={16} /> Back to all pickles</Link><label className="currency-select" aria-label="Select shopping market"><span>◎</span><select value={market} onChange={(event) => { const next = event.target.value as MarketCode; setMarket(next); window.localStorage.setItem("uragaya-market", next); }} aria-label="Shopping market">{Object.entries(markets).map(([code, item]) => <option key={code} value={code}>{item.display}</option>)}</select></label></div>
+      <div className="product-detail-top"><Link className="text-link" href="/#shop"><ArrowLeft size={16} /> Back to all pickles</Link><label className="currency-select" aria-label="Preview currency; shipping markets are not active"><span>◎</span><select value={market} onChange={(event) => { const next = event.target.value as MarketCode; setMarket(next); window.localStorage.setItem("uragaya-market", next); }} aria-label="Preview currency">{Object.entries(markets).map(([code, item]) => <option key={code} value={code}>{item.display}</option>)}</select></label></div>
       <section className="product-detail-layout">
         <div className={`product-detail-photo product-${product.tone}`}>
           <img src={product.image} alt={`${product.name} concept photography`} />
