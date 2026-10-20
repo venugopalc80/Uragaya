@@ -239,8 +239,8 @@ export default function Home() {
     const product = products.find((item) => item.id === customisingProductId);
     if (!product || !customisingSpice) return;
     const lineKey = cartLineKey(product.id, customisingSpice);
-    setCart((current) => ({ ...current, [lineKey]: (current[lineKey] || 0) + 1 }));
-    setCustomiseMessage(`${product.name} · ${spiceLabels[customisingSpice]} spice added to your bag.`);
+    setCart((current) => ({ ...current, [lineKey]: Math.min(99, (current[lineKey] || 0) + customisingQuantity) }));
+    setCustomiseMessage(`${customisingQuantity} × ${product.name} · ${spiceLabels[customisingSpice]} added to your bag. You can choose another pickle above.`);
   }
 
   return (
