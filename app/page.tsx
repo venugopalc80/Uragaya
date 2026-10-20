@@ -149,6 +149,24 @@ export default function Home() {
   }, [cart, cartLoaded]);
 
   useEffect(() => {
+    const syncCart = () => {
+      try {
+        const saved = window.localStorage.getItem("uragaya-cart");
+        setCart(saved ? JSON.parse(saved) as Record<string, number> : {});
+      } catch {
+        window.localStorage.removeItem("uragaya-cart");
+        setCart({});
+      }
+    };
+    window.addEventListener("storage", syncCart);
+    window.addEventListener("uragaya-cart-updated", syncCart);
+    return () => {
+      window.removeEventListener("storage", syncCart);
+      window.removeEventListener("uragaya-cart-updated", syncCart);
+    };
+  }, []);
+
+  useEffect(() => {
     const supabase = getSupabaseBrowserClient();
     if (!supabase) return;
     let cancelled = false;
