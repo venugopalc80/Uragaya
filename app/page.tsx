@@ -82,12 +82,12 @@ const conceptProducts: Product[] = [
 ];
 
 type MarketCode = "GB" | "IN" | "US" | "EU" | "AU";
-type SpiceLevel = "mild" | "medium" | "hot" | "extra-hot";
-const spiceLabels: Record<SpiceLevel, string> = { mild: "Mild", medium: "Medium", hot: "Hot", "extra-hot": "Extra hot" };
-const cartLineKey = (productId: string, spice: SpiceLevel = "medium") => `${productId}::${spice}`;
+type SpiceLevel = "standard" | "mild" | "medium" | "hot" | "extra-hot";
+const spiceLabels: Record<SpiceLevel, string> = { standard: "Standard recipe", mild: "Mild", medium: "Medium", hot: "Hot", "extra-hot": "Extra hot" };
+const cartLineKey = (productId: string, spice: SpiceLevel = "standard") => `${productId}::${spice}`;
 const parseCartLineKey = (key: string): { productId: string; spice: SpiceLevel } => {
   const [productId, candidate] = key.split("::");
-  const spice = (candidate && candidate in spiceLabels ? candidate : "medium") as SpiceLevel;
+  const spice = (candidate && candidate in spiceLabels ? candidate : "standard") as SpiceLevel;
   return { productId, spice };
 };
 const markets: Record<MarketCode, { label: string; currency: string; locale: string; display: string }> = {
@@ -123,7 +123,9 @@ export default function Home() {
   const [category, setCategory] = useState<"All" | "Vegetarian" | "Non-vegetarian">("All");
   const [notice, setNotice] = useState("");
   const [customisingProductId, setCustomisingProductId] = useState<string | null>(null);
-  const [customisingSpice, setCustomisingSpice] = useState<SpiceLevel | "">("");
+  const [customisingSpice, setCustomisingSpice] = useState<SpiceLevel | "">("standard");
+  const [customisingFlavour, setCustomisingFlavour] = useState("balanced");
+  const [customisingQuantity, setCustomisingQuantity] = useState(1);
   const [customiseMessage, setCustomiseMessage] = useState("");
   const [market, setMarket] = useState<MarketCode>("IN");
   useEffect(() => {
@@ -226,7 +228,9 @@ export default function Home() {
 
   function openCustomiser(product: Product) {
     setCustomisingProductId(product.id);
-    setCustomisingSpice("");
+    setCustomisingSpice("standard");
+    setCustomisingFlavour("balanced");
+    setCustomisingQuantity(1);
     setCustomiseMessage("");
     document.querySelector<HTMLDialogElement>("#customise-product")?.showModal();
   }
@@ -385,22 +389,33 @@ export default function Home() {
       </footer>
 
       <dialog id="customise-product" className="customise-dialog">
-        <div className="customise-head"><div><p className="eyebrow">MAKE IT YOUR KIND OF HEAT</p><h2>Customise your pickle</h2></div><button className="icon-button" onClick={() => document.querySelector<HTMLDialogElement>("#customise-product")?.close()} aria-label="Close customiser"><X /></button></div>
+        <div className="customise-head"><div><p className="eyebrow">URAGAYA · MAKE IT YOURS</p><h2>Build your pickle selection</h2><p className="customise-intro">Choose a jar now. Personalised recipes are coming after validation.</p></div><button className="icon-button" onClick={() => document.querySelector<HTMLDialogElement>("#customise-product")?.close()} aria-label="Close customiser"><X /></button></div>
         <div className="customise-body">
-          <label htmlFor="customise-product-choice">Choose your pickle</label>
-          <select id="customise-product-choice" value={customisingProductId ?? ""} onChange={(event) => { setCustomisingProductId(event.target.value); setCustomisingSpice(""); setCustomiseMessage(""); }}>
+          <label htmlFor="customise-product-choice">Your pickle</label>
+          <select id="customise-product-choice" value={customisingProductId ?? ""} onChange={(event) => { setCustomisingProductId(event.target.value); setCustomisingSpice("standard"); setCustomiseMessage(""); }}>
             <option value="" disabled>Select a product</option>
             {products.map((item) => <option key={item.id} value={item.id}>{item.name}</option>)}
           </select>
-          {customisingProductId && <div className="customise-selected-product">{(() => { const item = products.find((p) => p.id === customisingProductId); return item ? <><img src={item.image} alt={item.name} /><div><strong>{item.name}</strong><span>{formatPrice(priceFor(item), market)} · indicative price</span></div></> : null; })()}</div>}
-          <label htmlFor="customise-spice-choice">Preferred spice level</label>
-          <select id="customise-spice-choice" value={customisingSpice} onChange={(event) => setCustomisingSpice(event.target.value as SpiceLevel | "")} required>
-            <option value="" disabled>Choose your preferred heat</option>
-            <option value="mild">Mild — gentle warmth</option><option value="medium">Medium — balanced heat</option><option value="hot">Hot — bold chilli kick</option><option value="extra-hot">Extra hot — serious heat</option>
-          </select>
+          {customisingProductId && <div className="customise-selected-product">{(() => { const item = products.find((p) => p.id === customisingProductId); return item ? <><img src={item.image} alt={item.name} /><div><strong>{item.name}</strong><span>{item.subtitle}</span><span>{formatPrice(priceFor(item), market)} · indicative concept price</span></div></> : null; })()}</div>}
+          <div className="customise-section-title"><span>01</span><div><strong>Choose your heat</strong><p>Personalised spice levels are not available yet.</p></div></div>
+          <div className="heat-options">
+            <button type="button" className="heat-option" disabled><span className="heat-chillies">🌶</span><strong>Mild</strong><small>Gentle warmth</small><em>Coming soon</em></button>
+            <button type="button" className="heat-option" disabled><span className="heat-chillies">🌶🌶</span><strong>Medium</strong><small>Balanced kick</small><em>Coming soon</em></button>
+            <button type="button" className="heat-option" disabled><span className="heat-chillies">🌶🌶🌶</span><strong>Hot</strong><small>Bold and fiery</small><em>Coming soon</em></button>
+            <button type="button" className="heat-option" disabled><span className="heat-chillies">🌶🌶🌶🌶</span><strong>Extra hot</strong><small>For heat lovers</small><em>Coming soon</em></button>
+          </div>
+          <div className="customise-section-title"><span>02</span><div><strong>Flavour profile</strong><p>Only validated recipe profiles will be offered.</p></div></div>
+          <div className="flavour-options">
+            <button type="button" disabled>Balanced <small>Coming soon</small></button>
+            <button type="button" disabled>Tangy <small>Coming soon</small></button>
+            <button type="button" disabled>Mustard-forward <small>Coming soon</small></button>
+          </div>
+          <div className="customise-section-title"><span>03</span><div><strong>Quantity</strong><p>How many jars would you like?</p></div></div>
+          <div className="customise-quantity"><button type="button" onClick={() => setCustomisingQuantity((q) => Math.max(1, q - 1))} disabled={customisingQuantity <= 1} aria-label="Decrease quantity"><Minus size={16} /></button><strong>{customisingQuantity}</strong><button type="button" onClick={() => setCustomisingQuantity((q) => Math.min(10, q + 1))} disabled={customisingQuantity >= 10} aria-label="Increase quantity"><Plus size={16} /></button><span>jar{customisingQuantity === 1 ? "" : "s"}</span></div>
+          <div className="customise-current-recipe"><Check size={16} /><span><strong>Current standard recipe</strong><small>Personalised heat and flavour options are unavailable until recipes are confirmed.</small></span></div>
           {customiseMessage && <p className="customise-success" role="status">{customiseMessage}</p>}
-          <button className="button button-primary full-width" disabled={!customisingProductId || !customisingSpice} onClick={addCustomisedToCart}>Add to bag <ArrowRight size={16} /></button>
-          <p className="product-detail-disclaimer">Preference preview only. Spice variants must be validated before orders open.</p>
+          <button className="button button-primary full-width" disabled={!customisingProductId} onClick={addCustomisedToCart}>Add {customisingQuantity} to bag <ArrowRight size={16} /></button>
+          <p className="product-detail-disclaimer">After adding, this drawer stays open so you can choose another pickle. All prices are indicative and checkout is not live.</p>
         </div>
       </dialog>
       <dialog id="bag" className="bag-dialog">
